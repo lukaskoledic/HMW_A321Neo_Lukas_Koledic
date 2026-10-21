@@ -92,6 +92,20 @@ Speedbrake_clickspots_window = contextWindow {
   };
 }
 
+Rudder_pedal_clickspots_window = contextWindow {
+  name = "Rudder Pedal Clickspots";
+  position = { 100 , 100 , 400 , 200 };
+  noBackground = true ;
+  proportional = true ;
+  minimumSize = { 400 , 200 };
+  maximumSize = { 800 , 400 };
+  gravity = { 0 , 1 , 0 , 1 };
+  visible = false ;
+  components = {
+    rudder_pedal_clickspots {position = { 0 , 0 , 400 , 200 }}
+  };
+}
+
 --[[Vnav_debug_window = contextWindow {
 
   name = "VNAV DEBUG";

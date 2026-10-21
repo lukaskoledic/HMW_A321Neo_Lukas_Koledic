@@ -106,6 +106,10 @@ function Show_hide_SpeedbrakeClickspots()
   Speedbrake_clickspots_window:setIsVisible(not Speedbrake_clickspots_window:isVisible())
 end
 
+function Show_hide_RudderPedalClickspots()
+  Rudder_pedal_clickspots_window:setIsVisible(not Rudder_pedal_clickspots_window:isVisible())
+end
+
 function Show_hide_Performance_Debug()
   Performance_debug_window:setIsVisible(not Performance_debug_window:isVisible())
 end
@@ -220,6 +224,7 @@ ShowHideThrottleClickspots = sasl.appendMenuItem(Menu_main, "Show/Hide Throttle 
 ShowHideFlapClickspots = sasl.appendMenuItem(Menu_main, "Show/Hide Flap Clickspots", Show_hide_FlapClickspots)
 ShowHideParkingBrakeClickspots = sasl.appendMenuItem(Menu_main, "Show/Hide Parking Brake Clickspots", Show_hide_ParkingBrakeClickspots)
 ShowHideSpeedbrakeClickspots = sasl.appendMenuItem(Menu_main, "Show/Hide Speedbrake Clickspots", Show_hide_SpeedbrakeClickspots)
+ShowHideRudderPedalClickspots = sasl.appendMenuItem(Menu_main, "Show/Hide Rudder Pedal Clickspots", Show_hide_RudderPedalClickspots)
 ShowHideCinetracker = sasl.appendMenuItem(Menu_main, "Show/Hide Cinetracker", Show_hide_Cinetracker)
 
 sasl.appendMenuSeparator(Menu_main)
