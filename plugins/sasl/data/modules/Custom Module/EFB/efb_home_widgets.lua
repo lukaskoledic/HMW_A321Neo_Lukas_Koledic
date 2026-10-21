@@ -1,5 +1,5 @@
 -- HMW A321neo EFB Home Widgets (page 1)
--- Liquid glass UI (frosted glass), Fenix-style flight progress, TOGA button, plastic materials
+-- Liquid glass UI, Fenix-style flight progress, TOGA button, text labels
 -- Persistent battery, local clock, plane facts, FPLN progress bar, checklists
 
 include(moduleDirectory .. "/Custom Module/checklists/checklist_constants.lua")
@@ -140,81 +140,6 @@ local function plasticTogaButton(x, y, w, h, r, pressed)
     textc(x+w/2, y+h*0.52, "TOGA", 20, {1,1,1,1})
 end
 
--- Frosted app icon (liquid glass style)
-local function frostedIcon(x, y, size, kind, sel)
-    local icons = {
-        avitab    = {c={0.30,0.90,0.55}, sym="map"},
-        chartfox  = {c={1.00,0.65,0.20}, sym="chart"},
-        browser   = {c={1.00,0.40,0.40}, sym="globe"},
-        clock     = {c={0.80,0.55,1.00}, sym="clock"},
-        checklist = {c={0.20,0.85,0.80}, sym="check"},
-    }
-    local spec = icons[kind] or icons.clock
-    local bgc = sel and C.blue or {spec.c[1]*0.6, spec.c[2]*0.6, spec.c[3]*0.6, 0.85}
-    local symc = sel and {1,1,1,1} or {1,1,1,0.9}
-
-    -- Frosted background
-    roundRect(x-size/2, y-size/2, size, size, size*0.24, bgc)
-    -- Top highlight
-    rect(x-size/2+2, y-size/2+2, size-4, 2, {1,1,1,0.25})
-    -- Bottom shadow
-    rect(x-size/2+2, y+size/2-3, size-4, 2, {0,0,0,0.25})
-
-    local sx, sy = x, y
-    local ss = size*0.30
-    if spec.sym == "lines" then
-        rect(sx-ss, sy-ss/2, ss, 4, symc)
-        rect(sx-ss, sy+2, ss*0.7, 4, symc)
-        rect(sx-ss, sy+ss/2-2, ss*0.5, 4, symc)
-    elseif spec.sym == "map" then
-        roundRect(sx-ss, sy-ss, ss*2, ss*2, 4, symc)
-        roundRect(sx-ss+3, sy-ss+3, ss*1.2, ss*1.2, 3, bgc)
-        rect(sx+ss*0.3, sy-ss*0.2, 4, ss*0.6, symc)
-    elseif spec.sym == "chart" then
-        rect(sx-ss, sy+ss/2, 4, ss, symc)
-        rect(sx-ss+6, sy+ss/4, 4, ss*0.75, symc)
-        rect(sx-ss+12, sy, 4, ss*1.25, symc)
-        rect(sx-ss+18, sy-ss/4, 4, ss*1.5, symc)
-    elseif spec.sym == "globe" then
-        sasl.gl.drawCircle(sx, sy, ss, true, symc)
-        rect(sx-2, sy-ss, 4, ss*2, bgc)
-        rect(sx-ss, sy-2, ss*2, 4, bgc)
-    elseif spec.sym == "clock" then
-        sasl.gl.drawCircle(sx, sy, ss, true, symc)
-        rect(sx-1, sy-ss, 2, ss*0.6, bgc)
-        rect(sx, sy-2, ss*0.55, 2, bgc)
-    elseif spec.sym == "check" then
-        rect(sx-ss/2, sy-ss, 4, ss*0.5, symc)
-        rect(sx-ss/2+4, sy-ss/2, 4, ss*1.1, symc)
-    end
-end
-
--- Fenix-style flight progress bar with aircraft icon
-local function fenixProgressBar(x, y, w, h, progress, dep, arr, legs)
-    local r = 10
-    -- Track background (deep glass)
-    roundRect(x, y, w, h, r, {0.05,0.05,0.07,0.9})
-    -- Progress fill (blue gradient simulation)
-    local fill_w = math.max(0, w * progress)
-    if fill_w > 0 then
-        roundRect(x, y, fill_w, h, r, {0.12,0.58,0.95,1.0})
-    end
-    -- Aircraft icon at progress position
-    local plane_x = x + fill_w
-    local plane_y = y + h/2
-    -- Fuselage
-    roundRect(plane_x-14, plane_y-4, 28, 8, 4, {1,1,1,1})
-    -- Wings
-    rect(plane_x-22, plane_y-1, 44, 2, {1,1,1,0.9})
-    -- Tail
-    rect(plane_x+14, plane_y-6, 2, 12, {1,1,1,1})
-
-    -- DEP - ARR labels
-    text(x - 80, y + h/2 + 1, dep, 16, {1,1,1,0.9}, TEXT_ALIGN_RIGHT)
-    text(x + w + 80, y + h/2 + 1, arr, 16, {1,1,1,0.9}, TEXT_ALIGN_LEFT)
-    textc(x + w/2, y - 22, string.format("FLIGHT PROGRESS  %d%%   %d LEGS", math.floor(progress*100), legs), 13, {1,1,1,0.6})
-end
-
 -- ---------- Persistence ----------
 local EFB_PREF_FILE = (moduleDirectory or "").."/Custom Module/saved_configs/EFB_home.cfg"
 local EFB_BATTERY = 100
@@ -315,10 +240,10 @@ function EFB_home_buttons()
     -- Dock apps
     local dock_y = 735
     local dock_h = 55
-    local cxmin = W/6
+    local cxmin = W/5
     if cy >= dock_y and cy <= dock_y + 55 then
         local app = math.floor(cx/cxmin) + 1
-        if app >= 1 and app <= 6 then EFB_DOCK_APP = app end
+        if app >= 1 and app <= 5 then EFB_DOCK_APP = app end
     end
 
     -- TOGA button (top-right area)
@@ -801,7 +726,7 @@ local function drawHomeGrid()
     drawChecklistPanel(gx, gy + 2*(gh + gap), gw, gh)
 end
 
--- Fenix-style progress bar with aircraft icon
+-- Fenix-style progress bar (text only, no aircraft icon)
 local function drawFplnBar()
     local dep, arr, active, legs, progress, total = efb_fpln()
     local label = (dep ~= "XXXX" and arr ~= "XXXX") and (dep.."-"..arr) or "XXXX-XXXX"
@@ -810,7 +735,7 @@ local function drawFplnBar()
     textc(bx + bw/2, by + 18, "FLIGHT", 12, C.text_muted)
     textc(bx + bw/2, by + 44, label, 28, (active and C.blue_bright or C.text_muted), TEXT_ALIGN_CENTER)
 
-    -- Fenix-style progress bar with aircraft icon
+    -- Progress bar (text labels only)
     local bar_x, bar_y, bar_w, bar_h = bx + 40, by + 70, bw - 80, 12
     local r = 6
     roundRect(bar_x, bar_y, bar_w, bar_h, r, {0.05,0.05,0.07,0.9})
@@ -818,12 +743,6 @@ local function drawFplnBar()
     if fill_w > 0 then
         roundRect(bar_x, bar_y, fill_w, bar_h, r, {0.12,0.58,0.95,1.0})
     end
-    -- Aircraft icon at progress position
-    local plane_x = bar_x + fill_w
-    local plane_y = bar_y + 6
-    roundRect(plane_x-14, plane_y-5, 28, 10, 4, {1,1,1,1})
-    rect(plane_x-22, plane_y-1, 44, 2, {1,1,1,0.9})
-    rect(plane_x+14, plane_y-7, 2, 14, {1,1,1,1})
     textc(bx + bw/2, by + 86, string.format("FLIGHT PROGRESS  %d%%   %d LEGS", math.floor(progress*100), legs), 12, C.text_muted)
 end
 
@@ -861,7 +780,7 @@ function EFB_home_draw()
     elseif EFB_DOCK_APP == 5 then
         drawClockPanel(30, 120, W - 60, 560)
     else
-        local titles = { [1]="SimBrief (mock)", [2]="AviTab (mock)", [3]="ChartFox (mock)", [4]="Browser (mock)", [6]="Checklist (mock)" }
+        local titles = { [1]="AviTab", [2]="ChartFox", [3]="Browser", [4]="Clock", [6]="Checklist" }
         glassCard(30, 120, W - 60, 560, 16, C.glass_card, C.glass_highlight, C.glass_shadow)
         text(50, 145, titles[EFB_DOCK_APP] or "App", 20, C.text_main)
         text(50, 175, "Real browser / sync not available in SASL - mock view", 13, C.text_muted)
@@ -870,18 +789,17 @@ function EFB_home_draw()
         end
     end
 
-    -- Bottom dock (liquid glass)
+    -- Bottom dock (liquid glass, text labels only)
     local dock_y = 735
     local dock_h = 55
     glassCard(0, dock_y, W, dock_h, 0, C.dock_bg, {1,1,1,0.1}, {0,0,0,0.3})
     local apps = {"AviTab", "ChartFox", "Browser", "Clock", "Checklist"}
-    local keys = {"avitab", "chartfox", "browser", "clock", "checklist"}
     local cxmin = W/5
     for i = 1, 5 do
         local x = (i-1)*cxmin
         local sel = (EFB_DOCK_APP == i)
-        frostedIcon(x + cxmin/2, dock_y + 28, 34, keys[i], sel)
-        textc(x + cxmin/2, dock_y + dock_h - 10, apps[i], 10, (sel and C.blue or C.text_muted))
+        roundRect(x + 4, dock_y + 4, cxmin - 8, dock_h - 8, 6, sel and C.dock_active or {0.1,0.1,0.12,0.6})
+        textc(x + cxmin/2, dock_y + 28, apps[i], 13, (sel and C.white or C.text_muted))
     end
 
     -- Dead state overlay
