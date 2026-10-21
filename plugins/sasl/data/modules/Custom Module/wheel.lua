@@ -37,6 +37,8 @@ local nose_wheel_psi_baseline = {0, 0}
 local Front_gear_on_ground = globalProperty("sim/flightmodel2/gear/on_ground[0]")
 local Left_gear_on_ground = globalProperty("sim/flightmodel2/gear/on_ground[1]")
 local Right_gear_on_ground = globalProperty("sim/flightmodel2/gear/on_ground[2]")
+local Rudder_pedal_override_frames = globalProperty("a321neo/cockpit/FBW/rudder_pedal_override_frames")
+local Rudder_pedal_override_val = globalProperty("a321neo/cockpit/FBW/rudder_pedal_override_val")
 
 -- Computer status
 local is_lgciu_1_working = false
@@ -296,7 +298,13 @@ local function update_steering()
         end
     end
     -- Update graphical positions for the rudder pedals
-    pedals_pos = Math_clamp((get(RUD_TRIM_ANGLE)/30) + pedals_pos, -1, 1)
+    local override_frames = get(Rudder_pedal_override_frames)
+    if override_frames and override_frames > 0 then
+        pedals_pos = get(Rudder_pedal_override_val)
+        set(Rudder_pedal_override_frames, override_frames - 1)
+    else
+        pedals_pos = Math_clamp((get(RUD_TRIM_ANGLE)/30) + pedals_pos, -1, 1)
+    end
     set(Rudder_pedal_pos, pedals_pos)
     
     -- TODO: And now add the AUTOFLT component

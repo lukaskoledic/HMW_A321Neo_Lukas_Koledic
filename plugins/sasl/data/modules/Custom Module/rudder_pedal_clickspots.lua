@@ -8,11 +8,17 @@ size = { 400, 200 }
 -- Dataref for physical rudder pedal position (used by FBW system)
 local Rudder_pedal_pos = rawget(_G, "Rudder_pedal_pos") or createGlobalPropertyf("a321neo/cockpit/FBW/rudder_pedals_pos", 0, false, true, false)
 
+-- Override datarefs so clickspot input is not immediately overwritten by wheel.lua
+local Rudder_pedal_override_frames = rawget(_G, "Rudder_pedal_override_frames") or createGlobalPropertyf("a321neo/cockpit/FBW/rudder_pedal_override_frames", 0, false, true, false)
+local Rudder_pedal_override_val = rawget(_G, "Rudder_pedal_override_val") or createGlobalPropertyf("a321neo/cockpit/FBW/rudder_pedal_override_val", 0, false, true, false)
+
 -- X-Plane native yaw input (for direct control)
 local XP_YAW = rawget(_G, "XP_YAW") or globalProperty("sim/joystick/yoke_heading_ratio")
 
 local function rudder_set(value)
     return function()
+        set(Rudder_pedal_override_frames, 120)
+        set(Rudder_pedal_override_val, value)
         set(Rudder_pedal_pos, value)
         set(XP_YAW, value)
     end
