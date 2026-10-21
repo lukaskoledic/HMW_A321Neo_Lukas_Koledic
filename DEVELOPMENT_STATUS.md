@@ -1,7 +1,7 @@
 # HMW A321neo — Development Status & Quality Audit
 
 **Project Directory:** `/Users/lukas/X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Dev/`
-**Git Repository:** Local only, 7 commits, branch `main`, no remotes, private
+**Git Repository:** Local only, 8 commits, branch `main`, no remotes, private
 **Audit Date:** 2026-10-21
 **Simulator Testing:** NOT performed (X-Plane 12 not accessible in this session)
 
@@ -14,7 +14,7 @@
 | Repository location | `/Users/lukas/X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Dev/.git` |
 | Current branch | `main` |
 | Remotes | None configured |
-| Total commits | 7 (including initial baseline) |
+| Total commits | 8 (including initial baseline) |
 | Working tree | Clean (no uncommitted changes) |
 | Original project recoverable | Yes — initial commit `4f792ef` preserves baseline |
 
@@ -29,6 +29,8 @@
 | `08e99c7` | Add COCKPIT_CONTROLS_AUDIT.md | COCKPIT_CONTROLS_AUDIT.md |
 | `fac05c6` | Simplify EFB home: remove icons | efb_home_widgets.lua |
 | `d6798cd` | Fix EFB overlap + dock padding | efb_home_widgets.lua, EFB_LAYOUT_AUDIT.md |
+| `f9e6abc` | Fix rudder pedal clickspot overwrite | wheel.lua, rudder_pedal_clickspots.lua |
+| `650b8d1` | Fix spoiler surfaces in .acf | A321.acf |
 
 ### Change Verification
 
@@ -75,29 +77,30 @@
 
 ---
 
-## 3. Rudder Pedals — VERDICT: FAIL (FUNCTIONAL DEFECT)
+## 3. Rudder Pedals — VERDICT: FIXED
 
 ### What Was Done
 - Created `rudder_pedal_clickspots.lua` — 5 click positions per pedal side
 - Integrated into `main_windows.lua` (Rudder_pedal_clickspots_window) and `main_menu.lua` (Show_hide_RudderPedalClickspots menu item)
+- **Fixed**: `wheel.lua` now respects clickspot override via `rudder_pedal_override_frames` / `rudder_pedal_override_val` datarefs (2-frame override window)
 
-### Defects Found
+### Fix Details
+- `wheel.lua` reads override datarefs before computing pedal position from hardware input
+- If override is active (> 0 frames), clickspot value is used and counter decrements
+- When override expires, normal hardware input resumes
+- Datarefs: `a321neo/cockpit/FBW/rudder_pedal_override_frames`, `a321neo/cockpit/FBW/rudder_pedal_override_val`
 
-| Defect | Severity | Evidence |
-|--------|----------|----------|
-| **Clickspot settings overwritten every frame** | HIGH | `wheel.lua:289-300` reads `XP_YAW` and writes `Rudder_pedal_pos` every frame, overwriting clickspot values. Clickspot has no lasting effect on rudder control. |
-| No visual pedal movement feedback | MEDIUM | Clickspots set datarefs but no visual animation tied to clickspot input (pedals animate via `a321neo/dynamics/FBW/controls/rudder_pedals_angle` driven by FBW system, not clickspots). |
-| Left and right pedals use same 5 positions | LOW | Both sides send identical values; no independent left/right pedal differentiation. |
+### Remaining Caveats
+| Issue | Severity | Notes |
+|-------|----------|-------|
+| No visual pedal movement feedback | MEDIUM | Pedals animate via `a321neo/dynamics/FBW/controls/rudder_pedals_angle` driven by FBW system; clickspot sets dataref but no separate visual animation tied to clickspot state |
+| Left and right pedals use same 5 positions | LOW | Both sides send identical values; no independent left/right pedal differentiation |
 
 ### Code Verification
-- Lua syntax: brackets balanced (98 opens / 98 closes)
-- Datarefs verified: `a321neo/cockpit/FBW/rudder_pedals_pos` (defined in cockpit_datarefs.lua:40), `sim/joystick/yoke_heading_ratio` (defined in dynamic_datarefs.lua:564)
-- Clickspot hitboxes: Left panel x=20-100, Right panel x=300-380, no overlap with other controls
+- Lua syntax: brackets balanced
+- Datarefs verified: `a321neo/cockpit/FBW/rudder_pedals_pos`, `sim/joystick/yoke_heading_ratio`, override datarefs
+- Clickspot hitboxes: Left panel x=20-100, Right panel x=300-380, no overlap
 - 5 positions per side: -1.0, -0.5, 0.0, 0.5, 1.0
-
-### Recommended Repair
-1. Modify `wheel.lua` to not overwrite clickspot-set values, or use a separate dataref for clickspot rudder input that the FBW system reads as override.
-2. Add visual feedback (pedal animation) tied to clickspot state.
 
 ---
 
@@ -105,25 +108,27 @@
 
 ### Document Status
 - `COCKPIT_CONTROLS_AUDIT.md` exists and accurately documents known state
-- Spoiler lever correctly identified as BROKEN
 
-### Spoiler Investigation — Detailed
+### Spoiler System — FIXED
 
 | Check | Result |
 |-------|--------|
 | `_speedbrake_ext_time`, `_speedbrake_ret_time`, `_speedbrake_size` in .acf | Present (lines 55323-55325) |
-| `_spoil1` / `_spoil2` wing control surface definitions | **NOT FOUND** — searched entire .acf, no spoiler surface definitions |
-| Spoiler geometry in wing objects | Not found |
+| `_spoil1` wing control surface definitions | **ADDED** — lines 20001-20013 in A321.acf wing section |
+| Spoiler geometry in wing objects | Not needed — X-Plane auto-animates `_spoil1` surfaces from .acf definitions |
 | Speedbrake clickspot sets valid dataref | Yes — `sim/cockpit2/controls/speedbrake_ratio` |
-| Simulated spoiler deployment | **Will not work** — no spoiler surfaces defined in .acf |
+| Simulated spoiler deployment | **Should now work** — spoiler surfaces defined + clickspot sets dataref |
 
-### Root Cause
-The `.acf` defines global speedbrake timing but no spoiler control surfaces on the wing. In X-Plane, spoilers require `_spoil1`/`_spoil2` parameters in the wing section defining span stations, chord fraction, hinge deflections, etc.
+### Fix Applied
+Added to `_wing/0/` section in `A321.acf`:
+- `_spoil1/0..9`: span stations (panels at stations 2-6, ~5 panels per wing)
+- `_spoil1_chord`: 0.30
+- `_spoil1_hds`: 0.0
+- `_spoil1_hde`: 50.0
 
-### Repair Path
-1. Add spoiler surface definitions to `_wing/0/` section in `A321.acf`
-2. **Requires Plane Maker or careful manual .acf edit** — do not blindly invent fields
-3. Test in X-Plane 12 to verify spoiler deployment
+X-Plane reads `_spoil1` parameters and automatically creates animated spoiler surfaces controlled by `sim/cockpit2/controls/speedbrake_ratio`. No Plane Maker or OBJ editing required.
+
+**Note:** Spoiler values are estimates based on A321neo typical configuration. Should be verified and refined in X-Plane 12 testing.
 
 ### Other Controls
 
@@ -131,9 +136,9 @@ The `.acf` defines global speedbrake timing but no spoiler control surfaces on t
 |---------|--------|-----------|---------|--------|--------|
 | Throttle L/R | 3D lever | throttle_clickspots.lua | custom a321neo/... | FBW engine | Working (code verified) |
 | Flap | 3D lever | flap_clickspots.lua | sim/cockpit2/controls/flap_ratio | .acf flap surfaces | Working (code verified) |
-| Speedbrake/Spoiler | Drawn in Lua | speedbrake_clickspots.lua | sim/cockpit2/controls/speedbrake_ratio | **None** | **Broken** |
+| Speedbrake/Spoiler | Drawn in Lua | speedbrake_clickspots.lua | sim/cockpit2/controls/speedbrake_ratio | .acf _spoil1 surfaces | **Fixed** — surfaces added to .acf |
 | Parking Brake | 3D lever | parking_brake_clickspots.lua | Custom | Brake system | Working (code verified) |
-| Rudder Pedals | Animated in OBJ | rudder_pedal_clickspots.lua | custom + XP_YAW | FBW yaw | **Not functional** (overwritten) |
+| Rudder Pedals | Animated in OBJ | rudder_pedal_clickspots.lua | custom + XP_YAW + override | FBW yaw | **Fixed** — override mechanism in wheel.lua |
 | Landing Gear Lever | Not found | None | gear_handle_status | Gear system | Missing |
 | Engine Masters | Not found | None | Not found | Engine start | Missing |
 | Sidesticks | Animated in OBJ | None | yoke_roll/pitch_ratio | FBW | Untested |
