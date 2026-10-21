@@ -781,11 +781,11 @@ function EFB_home_draw()
         drawClockPanel(30, 120, W - 60, 560)
     else
         local titles = { [1]="AviTab", [2]="ChartFox", [3]="Browser", [4]="Clock", [6]="Checklist" }
-        glassCard(30, 120, W - 60, 560, 16, C.glass_card, C.glass_highlight, C.glass_shadow)
-        text(50, 145, titles[EFB_DOCK_APP] or "App", 20, C.text_main)
-        text(50, 175, "Real browser / sync not available in SASL - mock view", 13, C.text_muted)
+        glassCard(30, 225, W - 60, 480, 16, C.glass_card, C.glass_highlight, C.glass_shadow)
+        text(50, 250, titles[EFB_DOCK_APP] or "App", 20, C.text_main)
+        text(50, 280, "Real browser / sync not available in SASL - mock view", 13, C.text_muted)
         if EFB_DOCK_APP == 6 then
-            drawChecklistPanel(50, 210, W - 110, 450)
+            drawChecklistPanel(50, 310, W - 110, 380)
         end
     end
 
@@ -798,7 +798,7 @@ function EFB_home_draw()
     for i = 1, 5 do
         local x = (i-1)*cxmin
         local sel = (EFB_DOCK_APP == i)
-        roundRect(x + 4, dock_y + 4, cxmin - 8, dock_h - 8, 6, sel and C.dock_active or {0.1,0.1,0.12,0.6})
+        roundRect(x + 5, dock_y + 5, cxmin - 10, dock_h - 10, 6, sel and C.dock_active or {0.1,0.1,0.12,0.6})
         textc(x + cxmin/2, dock_y + 28, apps[i], 13, (sel and C.white or C.text_muted))
     end
 
