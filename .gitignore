@@ -1,0 +1,30 @@
+# X-Plane generated files
+*.log
+*.bak
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build artifacts
+*.obj.bak
+*.png.bak
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+ehthumbs.db
+Desktop.ini
+
+# Large binary files that shouldn't be tracked (if needed)
+# *.dds
+# *.png
+# *.obj

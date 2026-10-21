@@ -1,0 +1,14 @@
+Add legacy paint PNGs here after creating a livery from the helper script.
+
+Required exterior/gear diffuse names:
+- fuselage_fuselage_ALB.png
+- fuselage_h_stabs_ALB.png
+- fuselage_wing_ALB.png
+- fuselage_wingbox_ALB.png
+- front_gears_baked.png
+- fuselage_inside_doors_ALB.png
+- fuselage_cargo_bay_ALB.png
+- fuselage_cargo_bay_LIT.png
+
+Optional matching legacy normal maps use the same stem with _NRM.png, except
+the nose-gear normal map uses front_gears_baked_NML.png.

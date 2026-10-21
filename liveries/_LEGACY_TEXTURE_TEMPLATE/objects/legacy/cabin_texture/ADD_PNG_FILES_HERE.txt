@@ -1,0 +1,10 @@
+Optional cabin diffuse/lit replacements go here.
+
+Current legacy cabin texture stems:
+- business_class_baked.png / business_class_baked_LIT.png
+- cabin_dividers_baked.png / cabin_dividers_baked_LIT.png
+- economy_baked.png / economy_baked_LIT.png
+- roof_window_frame_baked.png / roof_window_frame_baked_LIT.png
+- front_cabin_baked.png / front_cabin_baked_LIT.png
+- aft_cabin_baked.png / aft_cabin_baked_LIT.png
+- cabin_screen_frames_baked.png / cabin_screen_frames_baked_LIT.png
