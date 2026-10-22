@@ -18,7 +18,7 @@ include("EFB/EFB_pages/5.lua")
 include("EFB/EFB_pages/6.lua")
 include("EFB/EFB_pages/7.lua")
 include("EFB/EFB_pages/8.lua")
-include("EFB/EFB_pages/9.lua")
+--include("EFB/EFB_pages/9.lua")
 include("EFB/EFB_pages/10.lua")
 include("EFB/efb_topcat.lua")
 
@@ -77,6 +77,49 @@ function draw_fading_transition()
 end
 
 ---------------------------------------------------------------------------------------------------------------
+--X-PLANE 12 COMMAND INTEGRATION--
+--Register X-Plane commands for EFB functions, enabling joystick/keyboard binding--
+
+local function register_efb_commands()
+    -- EFB page change commands
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/home"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 1 end
+    end)
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/ground"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 2 end
+    end)
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/perf"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 3 end
+    end)
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/config"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 4 end
+    end)
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/network"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 5 end
+    end)
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/engines"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 6 end
+    end)
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/sysdebug"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 7 end
+    end)
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/fltdebug"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 8 end
+    end)
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/off"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 10 end
+    end)
+
+    -- EFB toggle
+    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/toggle"), 0, function(phase)
+        if phase == SASL_COMMAND_BEGIN then
+            EFB_OFF = not EFB_OFF
+        end
+    end)
+end
+
+register_efb_commands()
+
 --load in the functions
 local EFB_pages_buttons = {
     EFB_execute_page_1_buttons,
@@ -87,7 +130,7 @@ local EFB_pages_buttons = {
     EFB_execute_page_6_buttons,
     EFB_execute_page_7_buttons,
     EFB_execute_page_8_buttons,
-    EFB_execute_page_9_buttons,
+    nil,
     EFB_execute_page_10_buttons,
 }
 
@@ -100,7 +143,7 @@ local EFB_updates_pages = {
     EFB_update_page_6,
     EFB_update_page_7,
     EFB_update_page_8,
-    EFB_update_page_9,
+    nil,
     EFB_update_page_10,
 }
 
@@ -113,7 +156,7 @@ local EFB_draw_pages = {
     EFB_draw_page_6,
     EFB_draw_page_7,
     EFB_draw_page_8,
-    EFB_draw_page_9,
+    nil,
     EFB_draw_page_10,
 }
 
@@ -163,7 +206,7 @@ local function draw_efb_bgd()
     sasl.gl.drawRectangle ( 0 , 0 , 1143, 710, EFB_BACKGROUND_COLOUR)
     sasl.gl.drawRectangle ( 0 , 710 , 1143, 90, EFB_BACKGROUND_TOP)
     if EFB_PAGE ~= 1 then
-        local efb_titles = {"HOME", "GND", "PERF", "CONFIG", "NETWK","ENG","","","","OFF"}
+        local efb_titles = {"HOME", "GND", "PERF", "CONFIG", "NETWK","ENG","SYS DEBUG","FLT DEBUG","","OFF"}
         for i=1, #efb_titles do
             drawTextCentered(Font_Airbus_panel, (1143/10)*i - 56  ,  750 , efb_titles[i] , 20, false, false, TEXT_ALIGN_CENTER, EFB_WHITE)
             drawTextCentered(Font_Airbus_panel, (1143/10)*i - 56  ,  750 , efb_titles[i] , 20, false, false, TEXT_ALIGN_CENTER, EFB_WHITE)

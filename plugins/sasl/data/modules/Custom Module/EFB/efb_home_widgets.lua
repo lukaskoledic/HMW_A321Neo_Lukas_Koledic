@@ -41,12 +41,6 @@ local C = {
     text_muted  = {1.00, 1.00, 1.00, 0.55},
     text_dim    = {1.00, 1.00, 1.00, 0.35},
 
-    -- Plastic TOGA button
-    toga_base   = {0.85, 0.08, 0.08, 1.0},
-    toga_high   = {1.00, 0.30, 0.30, 1.0},
-    toga_shadow = {0.45, 0.04, 0.04, 1.0},
-    toga_specular = {1.00, 1.00, 1.00, 0.95},
-
     -- Dock
     dock_bg     = {0.06, 0.06, 0.08, 0.92},
     dock_active = {0.12, 0.58, 0.95, 1.00},
@@ -121,25 +115,6 @@ local function valueColor(val, green_min, amber_min, red_min)
     return C.red
 end
 
--- Plastic TOGA button with 3D gloss
-local function plasticTogaButton(x, y, w, h, r, pressed)
-    local base = pressed and C.toga_shadow or C.toga_base
-    local high = pressed and C.toga_base or C.toga_high
-    local shad = pressed and C.toga_base or C.toga_shadow
-    local spec = C.toga_specular
-
-    -- Main body
-    roundRect(x, y, w, h, r, base)
-    -- Top gloss highlight
-    rect(x+2, y+2, w-4, h*0.35, high)
-    -- Bottom shadow
-    rect(x+2, y+h*0.7, w-4, h*0.3, shad)
-    -- Specular hotspot
-    roundRect(x+w*0.65, y+h*0.15, w*0.25, h*0.3, r*0.4, spec)
-    -- "TOGA" text
-    textc(x+w/2, y+h*0.52, "TOGA", 20, {1,1,1,1})
-end
-
 -- ---------- Persistence ----------
 local EFB_PREF_FILE = (moduleDirectory or "").."/Custom Module/saved_configs/EFB_home.cfg"
 local EFB_BATTERY = 100
@@ -147,7 +122,6 @@ local EFB_LAST_TIME = 0
 local EFB_FACT_IDX = 1
 local EFB_FACT_TIMER = 0
 local EFB_DOCK_APP = 0
-local TOGA_PRESSED = false
 
 local function efb_batt_load()
     local ok, t = pcall(table.load, EFB_PREF_FILE)
@@ -240,32 +214,18 @@ function EFB_home_buttons()
     -- Dock apps
     local dock_y = 735
     local dock_h = 55
-    local cxmin = W/5
+    local cxmin = W/3
     if cy >= dock_y and cy <= dock_y + 55 then
         local app = math.floor(cx/cxmin) + 1
-        if app >= 1 and app <= 5 then EFB_DOCK_APP = app end
+        -- Map dock position to EFB_DOCK_APP: 1->3 (Clock), 2->4 (Checklist), 3->5 (Debug)
+        if app == 1 then EFB_DOCK_APP = 3
+        elseif app == 2 then EFB_DOCK_APP = 4
+        elseif app == 3 then EFB_DOCK_APP = 5 end
     end
-
-    -- TOGA button (top-right area)
-    local toga_x = W - 150
-    local toga_y = 12
-    local toga_w = 120
-    local toga_h = 48
-    local toga_r = 12
-    if cx >= toga_x and cx <= toga_x + toga_w and cy >= toga_y and cy <= toga_y + toga_h then
-        TOGA_PRESSED = true
-    end
-
-    if TOGA_PRESSED then
-        if get(Cockpit_throttle_lever_L) < 0.95 or get(Cockpit_throttle_lever_R) < 0.95 then
-            set(Cockpit_throttle_lever_L, 1.0)
-            set(Cockpit_throttle_lever_R, 1.0)
-        end
-    end
+end
 end
 
 function EFB_home_on_mouse_up()
-    TOGA_PRESSED = false
 end
 
 -- ---------- Draw ----------
@@ -710,6 +670,75 @@ local function drawFltCtlWidget(x, y, w, h)
     rect(trim_center, bar_y, 1, bar_h, {1,1,1,0.3})
 end
 
+-- Debug panel: System debug datarefs for troubleshooting
+local function drawDebugPanel(x, y, w, h)
+    glassCard(x, y, w, h, 16, C.glass_card, C.glass_highlight, C.glass_shadow)
+    textc(x + w/2, y + 24, "DEBUG TOOLS", 14, C.text_muted)
+
+    local row_y = y + 52
+    local label_x = x + 24
+    local val_x = x + w - 24
+
+    -- Hydraulic
+    textc(x + w/2, row_y, "HYDRAULICS", 12, C.text_muted)
+    row_y = row_y + 22
+    local hyd_g = safeGet(rawget(_G, "Hydraulic_G_press"), 0)
+    local hyd_b = safeGet(rawget(_G, "Hydraulic_B_press"), 0)
+    local hyd_y = safeGet(rawget(_G, "Hydraulic_Y_press"), 0)
+    text(label_x, row_y, "G", 12, C.text_dim)
+    textr(val_x, row_y, fmtInt(hyd_g) .. " PSI", 14, hyd_g >= 1450 and C.green or C.red)
+    row_y = row_y + 18
+    text(label_x, row_y, "B", 12, C.text_dim)
+    textr(val_x, row_y, fmtInt(hyd_b) .. " PSI", 14, hyd_b >= 1450 and C.green or C.red)
+    row_y = row_y + 18
+    text(label_x, row_y, "Y", 12, C.text_dim)
+    textr(val_x, row_y, fmtInt(hyd_y) .. " PSI", 14, hyd_y >= 1450 and C.green or C.red)
+    row_y = row_y + 28
+
+    -- Electrical
+    textc(x + w/2, row_y, "ELECTRICAL", 12, C.text_muted)
+    row_y = row_y + 22
+    local bat1_v = safeGet(rawget(_G, "Elec_bat_1_V"), 0)
+    local bat2_v = safeGet(rawget(_G, "Elec_bat_2_V"), 0)
+    local gen1 = safeGet(rawget(_G, "Gen_1_line_active"), 0)
+    local gen2 = safeGet(rawget(_G, "Gen_2_pwr"), 0)
+    text(label_x, row_y, "BAT 1", 12, C.text_dim)
+    textr(val_x, row_y, fmtNum(bat1_v, "%.1f V"), 14, bat1_v >= 25 and C.green or C.red)
+    row_y = row_y + 18
+    text(label_x, row_y, "BAT 2", 12, C.text_dim)
+    textr(val_x, row_y, fmtNum(bat2_v, "%.1f V"), 14, bat2_v >= 25 and C.green or C.red)
+    row_y = row_y + 18
+    text(label_x, row_y, "GEN 1", 12, C.text_dim)
+    textr(val_x, row_y, gen1 == 1 and "ON" or "OFF", 14, gen1 == 1 and C.green or C.red)
+    row_y = row_y + 18
+    text(label_x, row_y, "GEN 2", 12, C.text_dim)
+    textr(val_x, row_y, gen2 == 1 and "ON" or "OFF", 14, gen2 == 1 and C.green or C.red)
+    row_y = row_y + 28
+
+    -- Flight controls
+    textc(x + w/2, row_y, "FLIGHT CONTROLS", 12, C.text_muted)
+    row_y = row_y + 22
+    local flap_pos = safeGet(rawget(_G, "Flaps_handle_position"), 0)
+    local spdbrk = safeGet(rawget(_G, "SPDBRK_HANDLE_RATIO"), 0)
+    local gear_h = safeGet(rawget(_G, "Gear_handle"), 0)
+    text(label_x, row_y, "FLAPS", 12, C.text_dim)
+    textr(val_x, row_y, tostring(flap_pos), 14, C.text_main)
+    row_y = row_y + 18
+    text(label_x, row_y, "SPOILERS", 12, C.text_dim)
+    textr(val_x, row_y, fmtNum(spdbrk, "%.0f%%", "---"), 14, C.text_main)
+    row_y = row_y + 18
+    text(label_x, row_y, "GEAR", 12, C.text_dim)
+    textr(val_x, row_y, gear_h == 1 and "DOWN" or "UP", 14, gear_h == 1 and C.green or C.blue)
+    row_y = row_y + 28
+
+    -- Rudder pedals
+    textc(x + w/2, row_y, "RUDDER PEDALS", 12, C.text_muted)
+    row_y = row_y + 22
+    local rudder_angle = safeGet(rawget(_G, "a321neo/dynamics/FBW/controls/rudder_pedals_angle"), 0)
+    text(label_x, row_y, "ANGLE", 12, C.text_dim)
+    textr(val_x, row_y, fmtNum(rudder_angle, "%.1f°", "---"), 14, C.text_main)
+end
+
 local function drawHomeGrid()
     local gw, gh = 350, 220
     local gx, gy = 30, 225
@@ -763,41 +792,29 @@ function EFB_home_draw()
     local bat_col = (EFB_BATTERY > 20 and C.text_muted or C.red)
     textr(W - 30, 62, string.format("BATTERY %d%%", math.floor(EFB_BATTERY)), 14, bat_col)
 
-    -- TOGA button (top-right, glossy plastic)
-    local toga_x = W - 150
-    local toga_y = 12
-    local toga_w = 120
-    local toga_h = 48
-    local toga_r = 12
-    plasticTogaButton(toga_x, toga_y, toga_w, toga_h, toga_r, TOGA_PRESSED)
-
     -- Fenix-style flight progress bar
     drawFplnBar()
 
     -- Content area
     if EFB_DOCK_APP == 0 then
         drawHomeGrid()
-    elseif EFB_DOCK_APP == 5 then
+    elseif EFB_DOCK_APP == 3 then
         drawClockPanel(30, 120, W - 60, 560)
-    else
-        local titles = { [1]="AviTab", [2]="ChartFox", [3]="Browser", [4]="Clock", [6]="Checklist" }
-        glassCard(30, 225, W - 60, 480, 16, C.glass_card, C.glass_highlight, C.glass_shadow)
-        text(50, 250, titles[EFB_DOCK_APP] or "App", 20, C.text_main)
-        text(50, 280, "Real browser / sync not available in SASL - mock view", 13, C.text_muted)
-        if EFB_DOCK_APP == 6 then
-            drawChecklistPanel(50, 310, W - 110, 380)
-        end
+    elseif EFB_DOCK_APP == 4 then
+        drawChecklistPanel(30, 225, W - 60, 480)
+    elseif EFB_DOCK_APP == 5 then
+        drawDebugPanel(30, 225, W - 60, 480)
     end
 
-    -- Bottom dock (liquid glass, text labels only)
+    -- Bottom dock (liquid glass, text labels only - functional tools)
     local dock_y = 735
     local dock_h = 55
     glassCard(0, dock_y, W, dock_h, 0, C.dock_bg, {1,1,1,0.1}, {0,0,0,0.3})
-    local apps = {"AviTab", "ChartFox", "Browser", "Clock", "Checklist"}
-    local cxmin = W/5
-    for i = 1, 5 do
+    local apps = {"Clock", "Checklist", "Debug"}
+    local cxmin = W/3
+    for i = 1, 3 do
         local x = (i-1)*cxmin
-        local sel = (EFB_DOCK_APP == i)
+        local sel = (EFB_DOCK_APP == i+2)
         roundRect(x + 5, dock_y + 5, cxmin - 10, dock_h - 10, 6, sel and C.dock_active or {0.1,0.1,0.12,0.6})
         textc(x + cxmin/2, dock_y + 28, apps[i], 13, (sel and C.white or C.text_muted))
     end
@@ -812,5 +829,4 @@ end
 
 -- Expose mouse up handler
 function EFB_home_on_mouse_up()
-    TOGA_PRESSED = false
 end

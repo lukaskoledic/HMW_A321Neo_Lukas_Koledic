@@ -21,15 +21,12 @@ function EFB_common_buttons()
         Button_check_and_action(EFB_CURSOR_X, EFB_CURSOR_Y, 575, 732, 681, 772, function ()
             EFB_PAGE = 6
         end)
-        --Button_check_and_action(EFB_CURSOR_X, EFB_CURSOR_Y, 5, 732, 110, 772, function ()
-        --    EFB_PAGE = 7
-        --end)
-        --Button_check_and_action(EFB_CURSOR_X, EFB_CURSOR_Y, 5, 732, 110, 772, function ()
-        --    EFB_PAGE = 8
-        --end)
-        --Button_check_and_action(EFB_CURSOR_X, EFB_CURSOR_Y, 5, 732, 110, 772, function ()
-        --    EFB_PAGE = 9
-        --end)
+        Button_check_and_action(EFB_CURSOR_X, EFB_CURSOR_Y, 687, 732, 792, 772, function ()
+            EFB_PAGE = 7
+        end)
+        Button_check_and_action(EFB_CURSOR_X, EFB_CURSOR_Y, 798, 732, 903, 772, function ()
+            EFB_PAGE = 8
+        end)
         Button_check_and_action(EFB_CURSOR_X, EFB_CURSOR_Y, 1033, 732, 1138, 772, function ()
             EFB_PAGE = 10
         end)
