@@ -10,3 +10,9 @@ avionics-bay-internal.log
 
 # X-Plane generated
 A321_prefs.txt
+
+# Aircraft worktrees and installers (tracked in the main HMW_A321Neo repository)
+HMW_A321Neo_AppleSilicon_Dev/
+HMW_A321Neo_AppleSilicon_Test/
+HMW_A321neo_Installer.app/
+HMW_A321neo_Installer.pkg
