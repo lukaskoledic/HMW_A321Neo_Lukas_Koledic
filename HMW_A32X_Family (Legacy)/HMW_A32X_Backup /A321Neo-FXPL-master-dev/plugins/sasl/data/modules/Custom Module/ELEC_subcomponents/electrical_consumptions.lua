@@ -1,0 +1,109 @@
+-------------------------------------------------------------------------------
+-- A32NX Freeware Project
+-- Copyright (C) 2020
+-------------------------------------------------------------------------------
+-- LICENSE: GNU General Public License v3.0
+--
+--    This program is free software: you can redistribute it and/or modify
+--    it under the terms of the GNU General Public License as published by
+--    the Free Software Foundation, either version 3 of the License, or
+--    (at your option) any later version.
+--
+--    Please check the LICENSE file in the root of the repository for further
+--    details or check <https://www.gnu.org/licenses/>
+-------------------------------------------------------------------------------
+-- File: electrical_consumptions.lua
+-- Short description: Power consumption of the electrical system when not added
+--                    to the specific compoennts
+-------------------------------------------------------------------------------
+
+
+function update_consumptions()
+
+    -- ND
+    if get(AC_ess_shed_pwrd) == 1 then   -- TODO This should be fixed when screens move around
+        ELEC_sys.add_power_consumption(ELEC_BUS_AC_ESS_SHED, 0.26, 0.26)   -- 30W (just hypothesis)
+    end
+
+    -- F/O PFD and ND
+    if get(AC_bus_2_pwrd) == 1 then   -- TODO This should be fixed when screens move around
+        ELEC_sys.add_power_consumption(ELEC_BUS_AC_2, 0.26*2, 0.26*2)   -- 30W (just hypothesis)
+    end
+
+    -- STDBY instruments
+    if get(AC_ess_bus_pwrd) == 1 then
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS, 1, 1)            -- Artificial horizon
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS, 0.25, 0.25)      -- Compass
+    end
+    if get(AC_ess_shed_pwrd) == 1 then
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS_SHED, 0.25, 0.25) -- Artificial horizon
+    end
+
+    -- CVR recorder
+    if get(AC_ess_shed_pwrd) == 1 then
+        ELEC_sys.add_power_consumption(ELEC_BUS_AC_ESS_SHED, 0.2, 0.2)
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS_SHED, 0.1, 0.1)
+    end
+    
+    -- FADEC and engine related stuffs
+    if ENG.dyn[1].firewall_valve == 0 then
+        -- FADEC has power if fire valve is open
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS_SHED, 0.5, 0.5)
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_BAT_BUS, 0.5, 0.5)
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_1, 0.05, 0.05)
+    end
+    if ENG.dyn[2].firewall_valve == 0 then
+        -- FADEC has power if fire valve is open
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS_SHED, 0.5, 0.5)
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_2, 0.55, 0.55)
+    end
+    if get(Engine_mode_knob) == 1 then    -- Ignition mode
+        ELEC_sys.add_power_consumption(ELEC_BUS_AC_ESS, 0.1, 0.1)
+        if not ENG.dyn[1].is_avail then
+            ELEC_sys.add_power_consumption(ELEC_BUS_AC_1, 1, 1.2)
+        end
+        if not ENG.dyn[2].is_avail then
+            ELEC_sys.add_power_consumption(ELEC_BUS_AC_2, 1, 1.2)
+        end
+    end
+    
+    -- Staring APU
+    if get(Apu_master_button_state) == 1 then    
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_BAT_BUS, 0.5, 0.5)   -- Control unit
+    
+        if get(Apu_N1) >  1 and get(Apu_N1) < 10 then    -- Starter motor
+            ELEC_sys.add_power_consumption(ELEC_BUS_DC_BAT_BUS, 70, 90) -- Like an car engine?
+        elseif get(Apu_N1) < 90 then
+            ELEC_sys.add_power_consumption(ELEC_BUS_DC_BAT_BUS, 2, 2)
+        end
+    end
+    
+    -- BLEED computers
+    ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS_SHED, 0.5, 0.5)
+    ELEC_sys.add_power_consumption(ELEC_BUS_DC_2, 0.5, 0.5)
+    
+    -- Autopilot
+    ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS_SHED, 0.5, 0.5)
+    ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS, 0.5, 0.5)
+    ELEC_sys.add_power_consumption(ELEC_BUS_DC_2, 1, 1)
+
+    -- FBW computers
+    if get(ELAC_1_status) == 1 then
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS, 0.5, 0.5)
+    end
+    if get(ELAC_2_status) == 1 then
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_2, 0.5, 0.5)
+    end
+    if get(SEC_1_status) == 1 then
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS, 0.5, 0.5)
+    end
+    if get(SEC_2_status) == 1 then
+        ELEC_sys.add_power_consumption(ELEC_BUS_DC_2, 0.5, 0.5)
+    end
+    -- Flap and slats ocmputer
+    ELEC_sys.add_power_consumption(ELEC_BUS_DC_ESS, 0.5, 0.5)
+    ELEC_sys.add_power_consumption(ELEC_BUS_DC_2, 0.5, 0.5)
+    
+    
+    
+end

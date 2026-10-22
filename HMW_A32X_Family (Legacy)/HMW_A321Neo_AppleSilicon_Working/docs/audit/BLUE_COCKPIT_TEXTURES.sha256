@@ -1,0 +1,10 @@
+# Blue cockpit preservation manifest
+# These hashes were captured before the model-switch and texture-reference edits.
+# Re-run: shasum -a 256 <paths below>
+05efb2a70665ea8456fec7a3f270c3b78d871f71d563cab1dda74efe535769ea  cockpit_3D/-PANELS-/Panel.png
+2fc97f4ae2f11fe89490a5789c4e18e7d478c6cf8193d5411972072b327312c4  cockpit_3D/-PANELS-/Panel_Preview.png
+758f307d9f586e245b6eb51ca02d3c99e219eb699fd989027907e355b73b48c4  plugins/sasl/data/modules/Custom Module/textures/PFD/static blue.png
+b1e9225470de27244c76b7a66d970ec38ecd2de52a01833bc95bbd839222afe5  plugins/sasl/data/modules/Custom Module/textures/ECAM/HYD/BLUE.png
+16a2b6b190f01f4df0f31bdf9d1ae858a87fd446e46f44ce453ebbdb01cf0895  plugins/sasl/data/modules/Custom Module/textures/ND/terrain-blue.png
+a64573c0ff791db533b62fcc1811851e8fc25eb308edbe087871215723c71e00  cockpit_3D/generic/MIP/pfd/static blue.png
+71bf324412615c60d35f4795d33cf966856fff61e8a479133c68e8ccc5dd5742  cockpit_3D/generic/MIP/pfd/static blue-1.png

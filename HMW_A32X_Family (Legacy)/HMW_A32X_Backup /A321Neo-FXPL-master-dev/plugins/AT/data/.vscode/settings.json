@@ -1,0 +1,8 @@
+{
+    "Lua.diagnostics.globals": [
+        "LogWarning",
+        "TEXT_ALIGN_CENTER",
+        "sasl",
+        "MB_LEFT"
+    ]
+}

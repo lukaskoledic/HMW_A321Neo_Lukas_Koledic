@@ -1,0 +1,28 @@
+{
+    "Lua.diagnostics.globals": [
+        "LogWarning",
+        "TEXT_ALIGN_CENTER",
+        "sasl",
+        "MENU_CHECKED",
+        "MENU_UNCHECKED",
+        "PLUGINS_MENU_ID",
+        "SASL_STOP_PROCESSING",
+        "onModuleShutdown",
+        "onMouseWheel",
+        "MB_LEFT",
+        "onMouseDown",
+        "update",
+        "draw",
+        "moduleDirectory",
+        "get",
+        "set",
+        "globalProperty",
+        "createGlobalPropertyf",
+        "createGlobalPropertyi",
+        "include",
+        "components",
+        "addSearchResourcesPath",
+        "updateAll",
+        "addSearchPath"
+    ]
+}

@@ -1,0 +1,12 @@
+# Runtime / generated
+*.log
+*.bak
+.DS_Store
+plugins/sasl/data/output/
+plugins/sasl/data/modules/configuration/wprefs.ini
+plugins/sasl/data/modules/Custom Module/saved_configs/*.cfg
+plugins/sasl/data/modules/Custom Module/saved_configs/saved_view
+avionics-bay-internal.log
+
+# X-Plane generated
+A321_prefs.txt
