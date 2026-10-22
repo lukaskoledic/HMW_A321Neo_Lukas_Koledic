@@ -399,49 +399,111 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 
 ## 14. Repository Integrity and Commit Summary
 
-- **Branch:** `main` (only branch, no remotes)
-- **Commits:** 11, all local, none pushed
+- **Primary branch:** `main` (tracking `origin/main`)
+- **Remote:** `https://github.com/lukaskoledic/HMW_A321Neo_Lukas_Koledic.git`
 - **Working tree:** Clean
 - **Baseline preserved:** Commit `4f792ef` contains all original files
 - **No secrets or credentials** found in changes
-- **No generated files** committed
+- **No generated files** committed (installer build output is gitignored)
 - **No temporary files** remaining
 
-### Today's Uncommitted Changes
+### Branches and Worktrees
 
-| File | Change Type |
-|------|-------------|
-| `A321.acf` | Removed objects 29 (temp fix.obj) and 33 (cup.obj); updated count 47->45 |
-| `objects/cockpit_interior_obj/temp fix.obj` | Deleted |
-| `objects/cup.obj` | Deleted |
-| `plugins/sasl/data/modules/Custom Module/EFB/efb_home_widgets.lua` | Removed TOGA button, refined dock, removed mock text, added debug panel |
-| `plugins/sasl/data/modules/Custom Module/EFB/efb_common_buttons.lua` | Enabled pages 7-8 in dock buttons |
-| `plugins/sasl/data/modules/Custom Module/EFB/efb.lua` | Removed page 9 include, updated page tables, added command registration, updated titles |
-| `plugins/sasl/data/modules/Custom Module/EFB/EFB_pages/7.lua` | Rewritten as Systems Debug page |
-| `plugins/sasl/data/modules/Custom Module/EFB/EFB_pages/8.lua` | Rewritten as Flight Debug page |
-| `plugins/sasl/data/modules/Custom Module/EFB/EFB_pages/9.lua` | Not removed from disk but excluded from includes |
-| `objects/cockpit_obj/cockpit_3d.obj` | Added PBR shader properties |
-| `objects/cockpit_obj/throttle quadrant.obj` | Added PBR shader properties |
-| `objects/cockpit_obj/front center pedestal panel.obj` | Added PBR shader properties |
-| `objects/cockpit_obj/MIP panel.obj` | Added PBR shader properties |
-| `objects/cockpit_obj/glareshield panel.obj` | Added PBR shader properties |
-| `objects/cockpit_interior_obj/flight_control.obj` | Added PBR shader properties |
-| `objects/cockpit_interior_obj/cockpit interior.obj` | Added PBR shader properties + A321_Mod wall texture |
-| `objects/cockpit_interior_obj/cockpit_misc_objs.obj` | Added PBR shader properties + A321_Mod wall texture |
-| `objects/cockpit_interior_obj/cockpit back walls.obj` | Added PBR shader properties + A321_Mod wall texture |
-| `objects/cockpit_interior_obj/cockpit_exterior_textures/a321mod_fuse_default.png` | New (from A321_Mod) |
-| `objects/cockpit_interior_obj/cockpit_exterior_textures/a321mod_fuse_default_NRM.png` | New (from A321_Mod) |
-| `documentation/DEVELOPMENT_STATUS.md` | Updated with all changes |
+| Path | Branch | Purpose |
+|------|--------|---------|
+| `X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Dev` | `main` | Development / stable aircraft |
+| `X-Plane 12/Aircraft/HMW_A321Neo_Test` | `feature/gear-integration` | Feature integration testing |
+| `Desktop/HMW_A321Neo_AppleSilicon_Test` | `desktop/test` | Desktop test copy (git worktree) |
+| `Desktop/HoldMyWire Systems` | `main` | Legacy A32X family source and backups (separate repo, 7,267 files) |
+
+All four branches are pushed to the GitHub remote.
+
+### Committed Work in This Session
+
+| Area | Change |
+|------|--------|
+| `A321.acf` | Removed objects 29 (temp fix.obj) and 33 (cup.obj); count 47->45 |
+| `objects/cockpit_interior_obj/temp fix.obj` | Deleted (unused placeholder) |
+| `objects/cup.obj` | Deleted (unused detail) |
+| `EFB/efb_home_widgets.lua` | TOGA button removed, dock refined to 3 functional apps, mock text removed, debug panel added |
+| `EFB/efb_common_buttons.lua` | Pages 7-8 enabled in dock navigation |
+| `EFB/efb.lua` | Page 9 excluded, page tables updated, 11 X-Plane commands registered, titles updated |
+| `EFB/EFB_pages/7.lua` | Rewritten as Systems Debug page |
+| `EFB/EFB_pages/8.lua` | Rewritten as Flight Debug page |
+| `EFB/EFB_pages/9.lua` | Excluded from includes (unused credits placeholder) |
+| `wheel.lua` | Rudder pedal animation dataref driving, nil-safe get() calls |
+| 8 cockpit `.obj` files | PBR shader properties (`ATTR_shiny_rat`, `ATTR_specular`) |
+| 3 cockpit wall `.obj` files | A321_Mod fuselage wall texture + normal map |
+| `cockpit_exterior_textures/a321mod_fuse_default*.png` | New, from A321_Mod |
+| 17 documentation `.md` files | All emoji and non-ASCII symbols removed, arrows/math transliterated to ASCII |
+| `installer/` | New: macOS app + pkg builder, background artwork, welcome screen, build script, docs |
+| `documentation/DEVELOPMENT_STATUS.md` | Updated throughout |
 
 ---
 
-## 15. Readiness Assessment
+## 15. macOS Installer
+
+### Delivered Artifacts
+
+| Artifact | Location | Size |
+|----------|----------|------|
+| `HMW_A321neo_Installer.pkg` | `~/Desktop/` | 77 KB |
+| `HMW_A321neo_Installer.app` | `~/Desktop/` | 85 KB |
+
+### Design
+
+The installer is a thin wrapper. The aircraft payload is **not** bundled; it is
+fetched from GitHub at run time. This keeps the package small and means
+re-running the installer always delivers the current `main` commit.
+
+**Download strategy** (first available wins):
+
+1. GitHub Release asset (preferred, fastest) -- currently no release published
+2. Branch source tarball from `codeload.github.com` -- single request, ~1.8 GB
+3. `git clone --depth 1` -- slowest, works when archives are unavailable
+
+**Update behaviour:** Re-running replaces the aircraft with the latest `main`
+commit while preserving `liveries/`, `A321_prefs.txt`, aircraft icons,
+`saved_configs/` and `wprefs.ini`.
+
+**X-Plane discovery:** Checks the standard application bundle paths, the
+`~/X-Plane 12` layout, `/Volumes/X-Plane 12`, and falls back to a searchable
+prompt.
+
+**Packaging:** `pkgbuild` produces the component package, `productbuild` adds a
+themed welcome screen (HTML) and the plane-inspired background artwork
+(1280x800 PNG: dusk sky, star field, horizon glow, airliner silhouette with
+red wingtip navigation light).
+
+**Sources:** `installer/` in the repository -- `build_installer.sh` rebuilds
+everything, `tools/make_background.py` regenerates the artwork.
+
+### Verification
+
+| Check | Status |
+|-------|--------|
+| App bundle structure | PASS - Info.plist validates, executable present, icon and background embedded |
+| Installer script syntax | PASS - `bash -n` clean |
+| X-Plane detection | PASS - resolves `/Users/lukas/X-Plane 12` correctly |
+| Component package | PASS - installs to `/Applications`, identifier `com.hmwa321neo.installer` |
+| Distribution package | PASS - background and welcome HTML embedded in `Resources/` |
+| End-to-end install | **NOT VERIFIED** - full download is ~1.8 GB and was not completed in this session |
+
+### Recommendation
+
+Publishing a GitHub Release with a zip of the aircraft tree activates the fast
+download path. Without it, installs use the tarball fallback and take several
+minutes.
+
+---
+
+## 16. Readiness Assessment
 
 | Question | Answer |
 |----------|--------|
 | Ready for private simulator test? | **YES, with caveats** -- all code changes are syntactically valid, but runtime behavior unverified |
-| Safe to push to private GitHub? | **YES** -- repository is local, clean, no secrets, no accidental deletions |
-| Conditions before push? | None from code perspective; user must create GitHub repo first and provide URL |
+| Safe to push to private GitHub? | **YES** -- already pushed; no secrets, no accidental deletions, clean trees |
+| Installer ready for distribution? | **YES** -- small, self-updating, themed; full download path untested |
 
 **Aircraft was NOT loaded and tested in X-Plane 12 during this audit session.**
 
@@ -455,3 +517,7 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 6. **Cockpit Wall Textures:** A321_Mod `Fuse-default.png` + normal map applied to 3 cockpit wall objects
 7. **X-Plane 12 Integration:** 11 commands registered (`a321neo/efb/page/*`, `a321neo/efb/toggle`) for joystick/keyboard binding
 8. **Rudder Pedal Animation:** Dataref `a321neo/dynamics/FBW/controls/rudder_pedals_angle` driven every frame in wheel.lua
+9. **SASL Command Fix:** `sasl.createCommand()` used before `registerCommandHandler()`; eliminated 10 log errors
+10. **Documentation Cleanup:** All emoji and non-ASCII symbols removed across 17 files; symbols transliterated to ASCII to preserve technical meaning
+11. **Legacy Source Versioned:** 7,267 files across the HMW A32X family and backups committed and pushed
+12. **macOS Installer:** App and pkg with themed background, self-updating from GitHub, on the Desktop
