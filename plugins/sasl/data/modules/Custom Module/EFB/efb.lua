@@ -79,39 +79,52 @@ end
 ---------------------------------------------------------------------------------------------------------------
 --X-PLANE 12 COMMAND INTEGRATION--
 --Register X-Plane commands for EFB functions, enabling joystick/keyboard binding--
+--NOTE: Custom commands MUST be created with sasl.createCommand() before they can be passed to
+--sasl.registerCommandHandler(). Using sasl.findCommand() on a non-existent command returns nil,
+--which produces "Fail to get parameter #1 (handlerT.mPtr)" errors in the X-Plane log.
 
 local function register_efb_commands()
-    -- EFB page change commands
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/home"), 0, function(phase)
+    -- Create the custom X-Plane commands first
+    local cmd_page_home     = sasl.createCommand("a321neo/efb/page/home",     "Switch EFB to HOME page")
+    local cmd_page_ground   = sasl.createCommand("a321neo/efb/page/ground",   "Switch EFB to GND page")
+    local cmd_page_perf     = sasl.createCommand("a321neo/efb/page/perf",     "Switch EFB to PERF page")
+    local cmd_page_config   = sasl.createCommand("a321neo/efb/page/config",   "Switch EFB to CONFIG page")
+    local cmd_page_network  = sasl.createCommand("a321neo/efb/page/network",  "Switch EFB to NETWK page")
+    local cmd_page_engines  = sasl.createCommand("a321neo/efb/page/engines",  "Switch EFB to ENG page")
+    local cmd_page_sysdebug = sasl.createCommand("a321neo/efb/page/sysdebug", "Switch EFB to SYS DEBUG page")
+    local cmd_page_fltdebug = sasl.createCommand("a321neo/efb/page/fltdebug", "Switch EFB to FLT DEBUG page")
+    local cmd_page_off      = sasl.createCommand("a321neo/efb/page/off",      "Switch EFB to OFF/standby")
+    local cmd_toggle        = sasl.createCommand("a321neo/efb/toggle",        "Toggle EFB power on/off")
+
+    -- Register the command handlers
+    sasl.registerCommandHandler(cmd_page_home, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 1 end
     end)
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/ground"), 0, function(phase)
+    sasl.registerCommandHandler(cmd_page_ground, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 2 end
     end)
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/perf"), 0, function(phase)
+    sasl.registerCommandHandler(cmd_page_perf, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 3 end
     end)
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/config"), 0, function(phase)
+    sasl.registerCommandHandler(cmd_page_config, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 4 end
     end)
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/network"), 0, function(phase)
+    sasl.registerCommandHandler(cmd_page_network, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 5 end
     end)
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/engines"), 0, function(phase)
+    sasl.registerCommandHandler(cmd_page_engines, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 6 end
     end)
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/sysdebug"), 0, function(phase)
+    sasl.registerCommandHandler(cmd_page_sysdebug, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 7 end
     end)
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/fltdebug"), 0, function(phase)
+    sasl.registerCommandHandler(cmd_page_fltdebug, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 8 end
     end)
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/page/off"), 0, function(phase)
+    sasl.registerCommandHandler(cmd_page_off, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then EFB_PAGE = 10 end
     end)
-
-    -- EFB toggle
-    sasl.registerCommandHandler(sasl.findCommand("a321neo/efb/toggle"), 0, function(phase)
+    sasl.registerCommandHandler(cmd_toggle, 0, function(phase)
         if phase == SASL_COMMAND_BEGIN then
             EFB_OFF = not EFB_OFF
         end
