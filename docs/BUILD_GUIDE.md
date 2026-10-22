@@ -1,4 +1,4 @@
-# HMW A321neo — Build Guide
+# HMW A321neo -- Build Guide
 
 > Active package state: legacy-only model. The new root fuselage/front-gear objects, model selector, and native AT bridge have been removed. Historical implementation notes below are retained for audit context; use the whole-simulator Rosetta launcher for the original Intel AT plugin.
 
@@ -106,4 +106,3 @@ Before considering another replacement, compare the exported C symbols and the C
 ## Build records
 
 Record the exact CMake configure command, compiler/toolchain, build command, exit status, output path, `file`/`lipo`/`otool` output, and the final SHA-256 hash in `docs/audit/`. Never describe an unperformed build as successful.
-

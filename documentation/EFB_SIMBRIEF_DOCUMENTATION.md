@@ -75,15 +75,15 @@ This document describes the EFB (Electronic Flight Bag) home page implementation
 - **FETCH FLIGHT PLAN** button (async coroutine)
 
 #### Flight Plan Injection Flow
-1. **Fetch**: `simbrief.fetch_ofp()` → SimBrief API v2 JSON
-2. **Parse**: `simbrief.parse_ofp()` → route, waypoints, weights, fuel, performance
-3. **Inject**: `simbrief.inject_flight_plan()` → FMGS temp flight plan → `FMGS_reshape_fpln` + `FMGS_insert_temp_fpln`
+1. **Fetch**: `simbrief.fetch_ofp()` -> SimBrief API v2 JSON
+2. **Parse**: `simbrief.parse_ofp()` -> route, waypoints, weights, fuel, performance
+3. **Inject**: `simbrief.inject_flight_plan()` -> FMGS temp flight plan -> `FMGS_reshape_fpln` + `FMGS_insert_temp_fpln`
 
 #### Async Coroutine Design
 - Non-blocking UI via Lua coroutines
 - `simbrief.ui.update()` called from `EFB_home_update()` each frame
-- Progress updates: 0.1 → 0.4 (fetch) → 0.7 (parse) → 1.0 (inject)
-- State machine: idle → fetching → parsing → injecting → success/error
+- Progress updates: 0.1 -> 0.4 (fetch) -> 0.7 (parse) -> 1.0 (inject)
+- State machine: idle -> fetching -> parsing -> injecting -> success/error
 
 ---
 
@@ -115,7 +115,7 @@ All clickspots:
 | `io.open` SASL restriction | Switched to `table.save`/`table.load` |
 | `FMGS_get_current_fpln` component loader | `rawget(_G, ...)` bypasses SASL `__index` |
 | Missing `front gear.obj` | Copied from `deactivated/` to `legacy/` |
-| AT plugin x86_64 on ARM64 | Disabled `plugins/AT` → `plugins/AT.disabled` |
+| AT plugin x86_64 on ARM64 | Disabled `plugins/AT` -> `plugins/AT.disabled` |
 | JSON parser missing | Auto-loads `networking/json.lua` as global `json` |
 | SimBrief HTTP | Uses SASL `sasl.net.downloadFileContentsSync` |
 
@@ -146,32 +146,32 @@ All clickspots:
 ### EFB Page 1
 - [ ] Liquid glass UI renders correctly
 - [ ] Fenix progress bar shows DEP-ARR, aircraft icon moves
-- [ ] TOGA button press → throttles to 1.0
+- [ ] TOGA button press -> throttles to 1.0
 - [ ] SimBrief widget shows status, progress, fetch button works
 - [ ] Live data widgets update in real-time
 - [ ] Dock icons respond to clicks
 
 ### Clickspots
-- [ ] Throttle detents → physical levers move
-- [ ] Flap positions → physical flaps move
-- [ ] Parking brake ON/OFF → brake engages
-- [ ] Speedbrake positions → spoilers extend/retract
+- [ ] Throttle detents -> physical levers move
+- [ ] Flap positions -> physical flaps move
+- [ ] Parking brake ON/OFF -> brake engages
+- [ ] Speedbrake positions -> spoilers extend/retract
 
 ### SimBrief
 - [ ] Pilot ID configurable (edit `simbrief.cfg`)
-- [ ] Fetch button → progress bar → success/error
+- [ ] Fetch button -> progress bar -> success/error
 - [ ] Flight plan appears in MCDU F-PLN page
 
 ### Log.txt Errors to Watch
-- `attempt to call field 'setTextureFilter'` → **FIXED**
-- `can't load component FMGS_*` → **FIXED**
-- `front gear.obj` missing → **FIXED**
-- AT plugin x86_64 → **FIXED (disabled)**
+- `attempt to call field 'setTextureFilter'` -> **FIXED**
+- `can't load component FMGS_*` -> **FIXED**
+- `front gear.obj` missing -> **FIXED**
+- AT plugin x86_64 -> **FIXED (disabled)**
 
 ---
 
 ## Future Enhancements (Deferred)
-- FPLN import from EFB → FMC (use MCDU F-PLN page for now)
+- FPLN import from EFB -> FMC (use MCDU F-PLN page for now)
 - Real browser in EFB (C++ backend not feasible in SASL3)
 - Weather radar overlay
 - Charts integration (ChartFox/Navigraph)

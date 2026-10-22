@@ -1,4 +1,4 @@
-# HMW A321neo — Asset Cleanup Report
+# HMW A321neo -- Asset Cleanup Report
 
 **Project Directory:** `/Users/lukas/X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Dev/`
 **Assessment Date:** 2026-10-21
@@ -18,23 +18,23 @@
 
 ## 2. Candidate Assets for Future Cleanup
 
-The following assets were identified as potentially unused or obsolete. **None were deleted** — dependency verification is incomplete.
+The following assets were identified as potentially unused or obsolete. **None were deleted** -- dependency verification is incomplete.
 
 | Asset Path | Suspected Status | Evidence | Dependency Check Required? | Recommended Action |
 |------------|-----------------|----------|---------------------------|-------------------|
 | `objects/legacy/deactivated/front gear.obj` | Unused (in deactivated folder) | Referenced in `.acf` line 19207 was replaced by `LandingGears.obj`; file is in `deactivated/` subfolder | YES | Verify no Lua code references this path before deletion |
 | `objects/left engine external.obj.bak` | Backup file | `.bak` extension suggests backup | YES | Verify not referenced before deletion |
 | `objects/legacy/texture/front_gears_baked.png` + `.nml` | Possibly unused | Texture for old nose gear which is now in LandingGears.obj | YES | Verify no OBJ references this texture |
-| `A321_prefs.txt` | Generated config | X-Plane preferences file | NO | Leave — simulator-generated |
-| `avionics-bay-internal.log` | Generated log | Log file | NO | Leave — simulator-generated |
-| `plugins/sasl/data/output/SASLLog.txt` | Generated log | Plugin output log | NO | Leave — simulator-generated |
-| `plugins/sasl/data/output/.gitignore` | Git config | Git ignore for output dir | NO | Leave — git config |
-| `plugins/sasl/data/.gitignore` | Git config | Git ignore for data dir | NO | Leave — git config |
-| `plugins/sasl/data/modules/configuration/.gitignore` | Git config | Git ignore for config dir | NO | Leave — git config |
-| `plugins/sasl/data/components/.gitignore` | Git config | Git ignore for components dir | NO | Leave — git config |
-| `plugins/sasl/data/modules/Custom Module/saved_configs/.gitignore` | Git config | Git ignore for saved_configs dir | NO | Leave — git config |
-| `plugins/sasl/data/modules/Custom Module/saved_configs/saved_view` | Generated | Saved view state | NO | Leave — runtime state |
-| `plugins/sasl/data/modules/Custom Module/tests/README` | Test documentation | Test suite README | NO | Leave — part of test suite |
+| `A321_prefs.txt` | Generated config | X-Plane preferences file | NO | Leave -- simulator-generated |
+| `avionics-bay-internal.log` | Generated log | Log file | NO | Leave -- simulator-generated |
+| `plugins/sasl/data/output/SASLLog.txt` | Generated log | Plugin output log | NO | Leave -- simulator-generated |
+| `plugins/sasl/data/output/.gitignore` | Git config | Git ignore for output dir | NO | Leave -- git config |
+| `plugins/sasl/data/.gitignore` | Git config | Git ignore for data dir | NO | Leave -- git config |
+| `plugins/sasl/data/modules/configuration/.gitignore` | Git config | Git ignore for config dir | NO | Leave -- git config |
+| `plugins/sasl/data/components/.gitignore` | Git config | Git ignore for components dir | NO | Leave -- git config |
+| `plugins/sasl/data/modules/Custom Module/saved_configs/.gitignore` | Git config | Git ignore for saved_configs dir | NO | Leave -- git config |
+| `plugins/sasl/data/modules/Custom Module/saved_configs/saved_view` | Generated | Saved view state | NO | Leave -- runtime state |
+| `plugins/sasl/data/modules/Custom Module/tests/README` | Test documentation | Test suite README | NO | Leave -- part of test suite |
 | `plugins/sasl/data/modules/Custom Module/textures/EFB/Icons/HOME page/overlay.png` | Possibly unused | EFB icons were removed from home page | YES | Verify no other EFB page references this |
 
 ---
@@ -68,8 +68,8 @@ The following assets were identified as potentially unused or obsolete. **None w
 
 | Asset | Possible Duplicate | Status |
 |-------|-------------------|--------|
-| `fmod/Master Bank.bank` (root fmod/) | `fmod/fmod/Master Bank.bank` | Both exist — one may be symlink or duplicate |
-| `fmod/Master Bank.strings.bank` (root fmod/) | `fmod/fmod/Master Bank.strings.bank` | Both exist — one may be symlink or duplicate |
+| `fmod/Master Bank.bank` (root fmod/) | `fmod/fmod/Master Bank.bank` | Both exist -- one may be symlink or duplicate |
+| `fmod/Master Bank.strings.bank` (root fmod/) | `fmod/fmod/Master Bank.strings.bank` | Both exist -- one may be symlink or duplicate |
 | `A321.snd` (root fmod/) | `fmod/A321BACKUP.snd` | Backup file |
 
 **Note:** These duplicates were NOT investigated further. They may be required by the FMOD sound system.
@@ -83,11 +83,11 @@ The following assets were identified as potentially unused or obsolete. **None w
 | `objects/legacy/deactivated/front gear.obj` | In deactivated folder; may be needed for reference or fallback |
 | `objects/left engine external.obj.bak` | Backup of external engine OBJ; may be needed if merge causes issues |
 | `plugins/AT.disabled/` | Disabled plugin; kept for reference |
-| `objects/LICENSE` | Jonathan Orr license — legally required to preserve |
-| `plugins/sasl/License` | SASL license — legally required to preserve |
-| `plugins/AT.disabled/License SASL` | AT license — legally required to preserve |
-| `plugins/AT.disabled/LICENSE` | AT license — legally required to preserve |
-| `fmod/LICENSE` | FMOD license — legally required to preserve |
+| `objects/LICENSE` | Jonathan Orr license -- legally required to preserve |
+| `plugins/sasl/License` | SASL license -- legally required to preserve |
+| `plugins/AT.disabled/License SASL` | AT license -- legally required to preserve |
+| `plugins/AT.disabled/LICENSE` | AT license -- legally required to preserve |
+| `fmod/LICENSE` | FMOD license -- legally required to preserve |
 
 ---
 

@@ -1,8 +1,8 @@
-# HMW A321neo — Asset Reuse Register
+# HMW A321neo -- Asset Reuse Register
 
 **Project Directory:** `/Users/lukas/X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Dev/`
 **Assessment Date:** 2026-10-21
-**Status:** Internal development copy — NOT for redistribution until licensing review is complete
+**Status:** Internal development copy -- NOT for redistribution until licensing review is complete
 
 ---
 
@@ -17,7 +17,7 @@
 
 ---
 
-## 2. HMW Aircraft Objects (Jonathan Orr-derived — DO NOT MODIFY)
+## 2. HMW Aircraft Objects (Jonathan Orr-derived -- DO NOT MODIFY)
 
 | Asset Path | Source | Author | License | Modifiable? | Redistributable? | Attribution Required? |
 |------------|--------|--------|---------|-------------|------------------|----------------------|
@@ -122,19 +122,19 @@
 |-------|------|---------|
 | Landing gear + door geometry | `objects/LandingGears.obj`, `objects/LandingGears.png`, `objects/LandingGears_NRM.png` | GPL v2 combined with CC BY-NC-ND objects |
 | Sound bank | `fmod/` | CC BY-NC-SA 4.0 combined with GPL v3 code |
-| Plugin binaries | `plugins/sasl/`, `plugins/AT.disabled/` | Proprietary — cannot redistribute |
-| Legacy aircraft objects | `objects/legacy/` | CC BY-NC-ND 4.0 — cannot modify |
+| Plugin binaries | `plugins/sasl/`, `plugins/AT.disabled/` | Proprietary -- cannot redistribute |
+| Legacy aircraft objects | `objects/legacy/` | CC BY-NC-ND 4.0 -- cannot modify |
 
 ---
 
 ## 6. Attribution Requirements (Mandatory if redistributed)
 
-1. **Jonathan Orr** — Aircraft model (CC BY-NC-ND 4.0)
-2. **Josh Davidson, Jonathan Redpath, merspieler, Matthew Maring, Thorsten Herrmann, Semir Gebran** — Landing gear assembly (GPL v2)
-3. **A32NX contributors** — FMOD sound bank (CC BY-NC-SA 4.0)
-4. **SASL developers (1-sim.com)** — SASL plugin framework (proprietary)
-5. **SIL International** — B612 fonts (OFL 1.1)
-6. **Adobe** — Source Code Pro font (Apache 2.0 / OFL)
+1. **Jonathan Orr** -- Aircraft model (CC BY-NC-ND 4.0)
+2. **Josh Davidson, Jonathan Redpath, merspieler, Matthew Maring, Thorsten Herrmann, Semir Gebran** -- Landing gear assembly (GPL v2)
+3. **A32NX contributors** -- FMOD sound bank (CC BY-NC-SA 4.0)
+4. **SASL developers (1-sim.com)** -- SASL plugin framework (proprietary)
+5. **SIL International** -- B612 fonts (OFL 1.1)
+6. **Adobe** -- Source Code Pro font (Apache 2.0 / OFL)
 
 ---
 

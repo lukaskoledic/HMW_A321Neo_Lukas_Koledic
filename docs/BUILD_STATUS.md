@@ -1,4 +1,4 @@
-# HMW A321neo — Build Status
+# HMW A321neo -- Build Status
 
 > Active package state: legacy-only model. The new root fuselage/front-gear objects, model selector, and native AT bridge have been removed. Historical implementation notes below are retained for audit context; use the whole-simulator Rosetta launcher for the original Intel AT plugin.
 
@@ -32,7 +32,7 @@ The source contained 1,450 files and 228 directories, including an accidental `~
 - The restored cockpit-back OBJ and `cockpit_back_wall.png` match the dev backup and upstream `3D-Model-Update` branch. The optional `HMW House` livery is installed in both packages and includes the correct legacy rear-gear/wing-box diffuse map; cockpit blue textures are not overridden.
 - The three identified local OBJ texture-reference issues were resolved with exact, existing paths. The blue cockpit texture preservation manifest is `docs/audit/BLUE_COCKPIT_TEXTURES.sha256`.
 - The unhandled MCDU popup clickspot command was declared and mapped to the existing `MCDU_window` popup handler. Remaining undeclared static names are known runtime-generated command families; see `docs/audit/CLICKSPOT_MAP.md`.
-- The cockpit panel resources `Panel.png` and `Panel_Preview.png` are valid 4096×4096 RGBA PNGs. All but one of the 26 inspected cockpit/interior OBJ files contain `VT` coordinates; `cockpit lights.obj` is light-only by inspection and was not visually validated.
+- The cockpit panel resources `Panel.png` and `Panel_Preview.png` are valid 4096x4096 RGBA PNGs. All but one of the 26 inspected cockpit/interior OBJ files contain `VT` coordinates; `cockpit lights.obj` is light-only by inspection and was not visually validated.
 - The X-Plane 12 installation was found at `/Users/lukas/X-Plane 12/`. Its application executable is universal (`x86_64` + `arm64`).
 - The AT Mac binary is x86_64-only and has no accompanying native source/build tree in the supplied package. The working package includes `tools/run_xplane_rosetta.command`; macOS architecture is process-wide, so this launcher moves the complete X-Plane process to x86_64 rather than trying to isolate AT.
 - The working avionics-bay dylib is universal (`x86_64` + `arm64`). Both slices report version `1.0.1` and commit `Unknown`, export the same public FFI API, pass architecture-specific `dlopen`/`dlsym` probes, and pass direct initialization/navdata-readiness probes against the installed X-Plane root with an equivalent temporary compatibility link. The aircraft wrapper now creates that link only after scenery discovery and removes it on normal shutdown. The original arm64-only file is retained at `plugins/avionicsbay/backups/libavionicsbay.arm64.original.dylib`.
@@ -73,4 +73,3 @@ See `APPLE_SILICON_COMPATIBILITY.md`, `BUILD_GUIDE.md`, and `TESTING.md` for the
 The active package has been rolled back to the legacy-only model format. The new root fuselage/front-gear objects, model selector, and native AT bridge are removed. Use the original AT plugin through the whole-simulator Rosetta launcher. The historical implementation details below describe the earlier hybrid build and are retained only as audit history.
 
 ---
-

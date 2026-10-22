@@ -1,4 +1,4 @@
-# HMW House — plain-white legacy livery
+# HMW House -- plain-white legacy livery
 
 This folder is already in X-Plane livery format. Copy the entire `HMW House` folder into the aircraft's `liveries/` directory:
 

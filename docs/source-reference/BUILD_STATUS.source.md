@@ -2,22 +2,22 @@
 
 ## Last Updated: 2026-10-19
 
-## SASL Plugin Status: ✅ APPLE SILICON COMPATIBLE
+## SASL Plugin Status: APPLE SILICON COMPATIBLE
 - **File**: `plugins/sasl/64/mac.xpl`
 - **Architecture**: Universal binary (x86_64 + arm64)
 - **Verification**: `lipo -archs plugins/sasl/64/mac.xpl` returns `x86_64 arm64`
 - **Status**: Loads successfully in X-Plane 12 on Apple Silicon (M3)
 - **No action needed**: SASL does not require recompilation
 
-## Avionicsbay Dependency Issue: 🔧 IDENTIFIED & READY FOR FIX
+## Avionicsbay Dependency Issue: IDENTIFIED & READY FOR FIX
 - **Problem**: SASL tries to load `plugins/avionicsbay/libavionicsbay.dylib`
 - **Current File**: `plugins/avionicsbay/libavionicsbay.dylib` (x86_64 only)
 - **Error**: "mach-o file, but is an incompatible architecture (have 'x86_64', need 'arm64e' or 'arm64e.v1' or 'arm64' or 'arm64')"
 - **Root Cause**: Missing arm64 slice in the dependency library
 
-## Potential Solution Found: 📡
+## Potential Solution Found: 
 **Source Code Repository**: https://github.com/rico23rico/avionics-bay
-- **Description**: "helper library for C/C++ and Lua plugins in X‑Plane 11"
+- **Description**: "helper library for C/C++ and Lua plugins in X-Plane 11"
 - **Features**: 
   - Exposes Lua via FFI (matches SASL usage)
   - Parses X-Plane data files: apt.dat, earth_fix.dat, earth_hold.dat, earth_mora.dat, earth_nav.dat
@@ -27,7 +27,7 @@
   - Build System: CMake (enabling cross-platform compilation)
   - License: GPL-3.0
 
-## Integration Status: ✅ DEV FOLDER CONTENTS INTEGRATED
+## Integration Status: DEV FOLDER CONTENTS INTEGRATED
 - **Action**: Integrated updates from `~/Desktop/A321Neo-FXPL-master-dev/`
 - **Method**: Used rsync to synchronize directories
 - **Preserved**: `/plugins/sasl/64/mac.xpl` (universal x86_64+arm64) - NOT overwritten with dev folder's x86_64-only version
@@ -35,8 +35,8 @@
 - **Avionicsbay**: Dev folder version copied (both were x86_64 only; ready for potential arm64 rebuild)
 
 ## Verification After Integration:
-- **SASL Plugin**: `lipo -archs plugins/sasl/64/mac.xpl` → `x86_64 arm64` ✅ (Universal)
-- **Avionicsbay Library**: `file plugins/avionicsbay/libavionicsbay.dylib` → `Mach-O 64-bit dynamically linked shared library x86_64` 
+- **SASL Plugin**: `lipo -archs plugins/sasl/64/mac.xpl` -> `x86_64 arm64` (Universal)
+- **Avionicsbay Library**: `file plugins/avionicsbay/libavionicsbay.dylib` -> `Mach-O 64-bit dynamically linked shared library x86_64` 
 - **Next Step**: Build avionicsbay from source for arm64 compatibility (see Solution Approach above)
 
 ## Files to Monitor:
@@ -56,11 +56,11 @@
 8. For universal binary: Build both arm64 and x86_64 versions, then combine using `lipo -create`
 
 ## Current Status Summary:
-✅ SASL: Already Apple Silicon compatible (no action needed)
-🔧 Avionicsbay: Requires arm64 build from source (solution identified)
-📁 Dev Folder: Updates integrated while preserving working components
-📍 Location: Successfully moved to Desktop as requested
-💾 Backup: Pre-integration state preserved
+SASL: Already Apple Silicon compatible (no action needed)
+Avionicsbay: Requires arm64 build from source (solution identified)
+Dev Folder: Updates integrated while preserving working components
+Location: Successfully moved to Desktop as requested
+Backup: Pre-integration state preserved
 
 ## Detailed Avionicsbay Build Instructions for Apple Silicon Arm64:
 
@@ -164,7 +164,7 @@ lipo -create libavionicsbay_arm64.dylib libavionicsbay_x86_64.dylib -output liba
 - GPL-3.0 license allows free use, modification, and distribution
 - Original x86_64 backup preserved for rollback if needed
 
-## Texture Organization and Legacy Model Status: 🔧 IDENTIFIED ISSUES & SOLUTIONS
+## Texture Organization and Legacy Model Status: IDENTIFIED ISSUES & SOLUTIONS
 
 ### 1. Gear Texture Linking Issue:
 - **Problem**: Gear appears as simple gray model due to missing textures

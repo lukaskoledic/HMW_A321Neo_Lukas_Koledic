@@ -1,4 +1,4 @@
-# HMW A321neo — Project Structure
+# HMW A321neo -- Project Structure
 
 > Active package state: legacy-only model. The new root fuselage/front-gear objects, model selector, and native AT bridge have been removed. Historical implementation notes below are retained for audit context; use the whole-simulator Rosetta launcher for the original Intel AT plugin.
 
@@ -70,4 +70,3 @@ This is a local checklist only. No Git repository has been initialized.
 - [x] Add the legacy-only rollback, clickspot mapping, and blue-cockpit preservation audit records.
 - [ ] Add automated static checks for ACF object/airfoil paths, exact-case OBJ texture paths, Mach-O architecture, and FFI symbol presence.
 - [x] Preserve a rollback copy before replacing the working native avionics library; retain the separate simulator test-copy gate.
-

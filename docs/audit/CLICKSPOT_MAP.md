@@ -6,7 +6,7 @@ The cockpit OBJ clickspots use SASL command manipulators. The shipped package is
 
 The two MCDU popup clickspots referenced `a321neo/cockpit/mcdu/toggle_popup`, but that command was not declared in the Lua command table. It is now declared in `cockpit_commands.lua` and handled by `main_menu.lua`:
 
-`a321neo/cockpit/mcdu/toggle_popup` → `MCDU_toggle_popup` → `Show_hide_MCDU()` → `MCDU_window`
+`a321neo/cockpit/mcdu/toggle_popup` -> `MCDU_toggle_popup` -> `Show_hide_MCDU()` -> `MCDU_window`
 
 This keeps the clickspot behavior aligned with the existing plugin-menu action and the single shared MCDU popup window.
 
@@ -28,4 +28,4 @@ The one dataref-bearing cockpit manipulator remains the simulator-standard flap 
 
 ## Runtime check
 
-The acceptance run should click at least one MCDU popup spot on each side, exercise the DRAIMS/MCDU dynamic command families, and verify the same controls after switching new → legacy. A static command-name match is not a substitute for an in-sim interaction test.
+The acceptance run should click at least one MCDU popup spot on each side, exercise the DRAIMS/MCDU dynamic command families, and verify the same controls after switching new -> legacy. A static command-name match is not a substitute for an in-sim interaction test.

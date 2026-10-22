@@ -1,4 +1,4 @@
-# HMW A321neo — Testing Workflow
+# HMW A321neo -- Testing Workflow
 
 > Active package state: legacy-only model. The new root fuselage/front-gear objects, model selector, and native AT bridge have been removed. Historical implementation notes below are retained for audit context; use the whole-simulator Rosetta launcher for the original Intel AT plugin.
 
@@ -49,7 +49,7 @@ Use a new test name that does not collide with an existing aircraft. Keep the so
 1. Stop X-Plane and verify the destination is absent.
 2. If a destination already exists and must be retained, make a timestamped backup before changing anything. Verify the backup path and hash before proceeding.
 3. Copy the working project to a dedicated test path such as `/Users/lukas/X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Test/`. Do not install the source path.
-4. Verify the test copy’s key hashes and architecture before launching.
+4. Verify the test copy's key hashes and architecture before launching.
 5. Start X-Plane, load the test aircraft, and allow the aircraft to reach the normal flight state. Record the test date, X-Plane version, aircraft path, and whether the flight was cold-and-dark or already running.
 6. Close X-Plane normally. Copy the resulting `Log.txt` to `docs/audit/` with a timestamped filename; keep the original X-Plane log intact.
 7. Review the log in separate gates: aircraft/OBJ loading, plugin discovery, SASL project errors, avionics-bay initialization/data readiness, AT plugin loading, and FMOD/sound errors.
@@ -87,4 +87,3 @@ The pre-existing `/Users/lukas/X-Plane 12/Log.txt` contains a prior `HMW_A321Neo
 The active package has been rolled back to the legacy-only model format. The new root fuselage/front-gear objects, model selector, and native AT bridge are removed. Use the original AT plugin through the whole-simulator Rosetta launcher. The historical implementation details below describe the earlier hybrid build and are retained only as audit history.
 
 ---
-

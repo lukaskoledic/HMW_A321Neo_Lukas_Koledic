@@ -1,4 +1,4 @@
-# HMW A321neo — Cockpit Controls Audit
+# HMW A321neo -- Cockpit Controls Audit
 
 **Assessment Date:** 2026-10-21
 **Project Directory:** `/Users/lukas/X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Dev/`
@@ -25,41 +25,41 @@
 
 ## Detailed Findings
 
-### 1. Throttle Levers — **WORKING**
+### 1. Throttle Levers -- **WORKING**
 - **Files:** `throttle_clickspots.lua`, `main_windows.lua`, `main_menu.lua`
 - **Detents:** TOGA (1.00), MCT (0.825), CLB (0.675), IDLE (0.025), REVERSE (-0.50)
 - **Datarefs:** Custom `a321neo/cockpit/engine/throttle_lever_L/R`
 - **Visual:** 3D levers in `cockpit_obj/throttle quadrant.obj` (ATTR_specular added)
 - **Connection:** FBW engine control reads throttle positions
 
-### 2. Flap Lever — **WORKING**
+### 2. Flap Lever -- **WORKING**
 - **Files:** `flap_clickspots.lua`, `main_windows.lua`, `main_menu.lua`
 - **Positions:** 0 (CLEAN), 0.25 (1), 0.50 (1+F), 0.75 (2), 1.00 (FULL)
 - **Dataref:** Standard `sim/cockpit2/controls/flap_ratio`
 - **Connection:** .acf flap definitions (_flap1/_flap2 on wing)
 
-### 3. Speedbrake/Spoiler Lever — **BROKEN (Critical)**
+### 3. Speedbrake/Spoiler Lever -- **BROKEN (Critical)**
 - **Files:** `speedbrake_clickspots.lua`, `main_windows.lua`, `main_menu.lua`
 - **Positions:** 0.00 (RETRACT), 0.25 (ARMED), 0.50 (EXTEND), 1.00 (FULL)
-- **Dataref:** Standard `sim/cockpit2/controls/speedbrake_ratio` ✓
-- **Visual:** Drawn in clickspot component ✓
+- **Dataref:** Standard `sim/cockpit2/controls/speedbrake_ratio` 
+- **Visual:** Drawn in clickspot component 
 - **Root Cause:** **No spoiler surfaces defined in A321.acf**
   - Only global timing: `_speedbrake_ext_time`, `_speedbrake_ret_time`, `_speedbrake_size`
   - No `_spoil1`, `_spoil2` wing control surface definitions
   - No spoiler geometry in wing objects
 - **Fix Required:** Add spoiler surface definitions to .acf wing section
 
-### 4. Landing Gear Lever — **MISSING**
+### 4. Landing Gear Lever -- **MISSING**
 - No clickspot component found
 - Gear lever typically on center pedestal (forward of throttles)
 - Dataref: `sim/cockpit2/controls/gear_handle_status` (0=up, 1=down)
 - Gear system exists in .acf (3 gears defined) but no lever control
 
-### 5. Parking Brake — **WORKING**
+### 5. Parking Brake -- **WORKING**
 - **Files:** `parking_brake_clickspots.lua`, `main_windows.lua`, `main_menu.lua`
 - **Dataref:** Custom implementation
 
-### 6. Rudder Pedals — **ADDED (This Session)**
+### 6. Rudder Pedals -- **ADDED (This Session)**
 - **Files:** `rudder_pedal_clickspots.lua` (new), `main_windows.lua`, `main_menu.lua`
 - **Datarefs:** 
   - `a321neo/cockpit/FBW/rudder_pedals_pos` (-1 to 1)
@@ -67,12 +67,12 @@
 - **Visual:** Animated in `cockpit_interior_obj/flight_control.obj` using `a321neo/dynamics/FBW/controls/rudder_pedals_angle`
 - **Connection:** FBW yaw control reads `Total_input_yaw` which includes pedal input
 
-### 7. Sidesticks — **UNTESTED**
+### 7. Sidesticks -- **UNTESTED**
 - Visual animation in `flight_control.obj`
 - Uses standard X-Plane yoke datarefs
-- No clickspot for mouse interaction (typically not needed — hardware input)
+- No clickspot for mouse interaction (typically not needed -- hardware input)
 
-### 8. Engine Masters — **MISSING**
+### 8. Engine Masters -- **MISSING**
 - No clickspot or visual lever found
 - Typically on overhead panel
 - Datarefs: `sim/cockpit2/engine/actuators/engine_start_*`, `fuel_pump_on`
@@ -100,7 +100,7 @@ _spoil2_hds/_hde - Hinge deflections
 1. **Backup A321.acf** before editing
 2. **Add spoiler definitions** to `_wing/0/` section (after `_flap2` block)
 3. **Define 5-6 spoiler panels** per wing (typical A321 has 5 ground + 5 flight spoilers per wing)
-4. **Test in X-Plane 12** — verify lever movement deploys spoilers visually
+4. **Test in X-Plane 12** -- verify lever movement deploys spoilers visually
 5. **Verify ground spoiler auto-deploy** on landing (requires `_spoil2` with auto logic)
 
 ### Risk Assessment
@@ -129,21 +129,21 @@ _spoil2_hds/_hde - Hinge deflections
 
 | File | Change |
 |------|--------|
-| `plugins/sasl/data/modules/Custom Module/rudder_pedal_clickspots.lua` | **NEW** — Rudder pedal clickspot component |
+| `plugins/sasl/data/modules/Custom Module/rudder_pedal_clickspots.lua` | **NEW** -- Rudder pedal clickspot component |
 | `plugins/sasl/data/modules/main_windows.lua` | Added Rudder_pedal_clickspots_window |
 | `plugins/sasl/data/modules/main_menu.lua` | Added Show_hide_RudderPedalClickspots menu item |
 | `A321.acf` | Replaced `legacy/front gear.obj` with `LandingGears.obj` (nose + main gear with doors) |
-| `objects/LandingGears.obj` | **NEW** — Complete gear assembly from A321_Mod (GPL v2) |
-| `objects/LandingGears.png` | **NEW** — Gear albedo texture |
-| `objects/LandingGears_NRM.png` | **NEW** — Gear normal map |
+| `objects/LandingGears.obj` | **NEW** -- Complete gear assembly from A321_Mod (GPL v2) |
+| `objects/LandingGears.png` | **NEW** -- Gear albedo texture |
+| `objects/LandingGears_NRM.png` | **NEW** -- Gear normal map |
 
 ---
 
 ## Next Actions (Priority)
 
-1. **Fix Spoiler System** — Add spoiler surfaces to .acf (critical for flight operations)
-2. **Add Landing Gear Lever** — Implement clickspot for gear handle
-3. **Add Engine Masters** — Overhead panel clickspots
-4. **Test All Controls in Sim** — Verify actual behavior
-5. **External Engine Fan Animations** — Requires Blender (manual OBJ edit too risky)
-6. **EFB Simplification** — Remove icons, enforce spacing (Tasks 7-8)
+1. **Fix Spoiler System** -- Add spoiler surfaces to .acf (critical for flight operations)
+2. **Add Landing Gear Lever** -- Implement clickspot for gear handle
+3. **Add Engine Masters** -- Overhead panel clickspots
+4. **Test All Controls in Sim** -- Verify actual behavior
+5. **External Engine Fan Animations** -- Requires Blender (manual OBJ edit too risky)
+6. **EFB Simplification** -- Remove icons, enforce spacing (Tasks 7-8)

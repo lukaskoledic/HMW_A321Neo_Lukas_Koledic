@@ -1,4 +1,4 @@
-# HMW A321neo — Development Status & Quality Audit
+# HMW A321neo -- Development Status & Quality Audit
 
 **Project Directory:** `/Users/lukas/X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Dev/`
 **Git Repository:** Local only, 11 commits, branch `main`, no remotes, private
@@ -16,7 +16,7 @@
 | Remotes | None configured |
 | Total commits | 11 (including initial baseline) |
 | Working tree | Clean (no uncommitted changes) |
-| Original project recoverable | Yes — initial commit `4f792ef` preserves baseline |
+| Original project recoverable | Yes -- initial commit `4f792ef` preserves baseline |
 
 ### Commit History (verified against `git log --oneline`)
 
@@ -36,28 +36,28 @@
 
 ### Change Verification (verified against `git diff 4f792ef..HEAD`)
 
-- **No accidental deletions** — diff stat shows 53,902 insertions, 98 deletions (mostly LandingGears.obj merge content)
-- **No unrelated edits** — all changes map to specific tasks
-- **.acf change** — 2 changes: object 46 `legacy/front gear.obj` → `LandingGears.obj`, plus `_spoil1` wing surface definitions
-- **No commits pushed, no remotes configured** — repository is local and private
-- **No temporary files** — LandingGearsWithDoors.obj was removed after merge
-- **Working tree clean** — all changes from this session are uncommitted
+- **No accidental deletions** -- diff stat shows 53,902 insertions, 98 deletions (mostly LandingGears.obj merge content)
+- **No unrelated edits** -- all changes map to specific tasks
+- **.acf change** -- 2 changes: object 46 `legacy/front gear.obj` -> `LandingGears.obj`, plus `_spoil1` wing surface definitions
+- **No commits pushed, no remotes configured** -- repository is local and private
+- **No temporary files** -- LandingGearsWithDoors.obj was removed after merge
+- **Working tree clean** -- all changes from this session are uncommitted
 
 ---
 
-## 2. Landing Gear Integration — VERDICT: IMPLEMENTED, NOT TESTED
+## 2. Landing Gear Integration -- VERDICT: IMPLEMENTED, NOT TESTED
 
 ### What Was Done
 
 1. Copied `LandingGears.obj`, `LandingGears.png`, `LandingGears_NRM.png` from `/Users/lukas/Desktop/A321_Mod/objects/` (commit `e28f5e6`)
-2. Updated `A321.acf` line 19207: object 46 `legacy/front gear.obj` → `LandingGears.obj`
+2. Updated `A321.acf` line 19207: object 46 `legacy/front gear.obj` -> `LandingGears.obj`
 3. Merged gear door geometry from A321_Mod `Fuselage.obj` into `LandingGears.obj` (commit `d3ecb1b`):
    - Main gear doors: MLGGearDoorL, MLGGearDoorR (378 tris each)
    - Wing doors: MLGWingDoorL1/L2/R1/R2
    - Nose gear doors: NLGAftDoorL/R, NLGForewardDoorL/R
    - Door actuators: GearLDoorActuatorL/R, GearLDoorActuatorRodL/R
    - NLGFittingPanel
-4. Object 43 (`legacy/under carriage.obj` — wingbox) preserved unchanged
+4. Object 43 (`legacy/under carriage.obj` -- wingbox) preserved unchanged
 
 ### Verification Results (static inspection only)
 
@@ -83,15 +83,15 @@
 | LandingGears_NRM.png | GPL v2 (project license) | A321_Mod/objects/ | Same as above |
 | Door geometry (from Fuselage.obj) | GPL v2 (project license) | A321_Mod/objects/Fuselage.obj | Same as above |
 
-**Licensing Concern:** HMW's own objects are CC BY-NC-ND 4.0 (JonathanOrr) — no modifications allowed. GPL v2 gear merged into HMW project is permissible for internal use but redistribution requires careful license compatibility review. No per-file copyright notices in OBJ files; attribution documented in A321_Mod README.copyright.md only.
+**Licensing Concern:** HMW's own objects are CC BY-NC-ND 4.0 (JonathanOrr) -- no modifications allowed. GPL v2 gear merged into HMW project is permissible for internal use but redistribution requires careful license compatibility review. No per-file copyright notices in OBJ files; attribution documented in A321_Mod README.copyright.md only.
 
 ---
 
-## 3. Rudder Pedals — VERDICT: IMPLEMENTED, NOT TESTED
+## 3. Rudder Pedals -- VERDICT: IMPLEMENTED, NOT TESTED
 
 ### What Was Done
 
-1. Created `rudder_pedal_clickspots.lua` — 5 click positions per pedal side (-1.0, -0.5, 0.0, 0.5, 1.0)
+1. Created `rudder_pedal_clickspots.lua` -- 5 click positions per pedal side (-1.0, -0.5, 0.0, 0.5, 1.0)
 2. Integrated into `main_windows.lua` (Rudder_pedal_clickspots_window) and `main_menu.lua` (Show_hide_RudderPedalClickspots menu item)
 3. **Fixed**: `wheel.lua` now respects clickspot override via `rudder_pedal_override_frames` / `rudder_pedal_override_val` datarefs
 
@@ -118,7 +118,7 @@
 
 ---
 
-## 4. Spoiler System — VERDICT: IMPLEMENTED, NOT TESTED
+## 4. Spoiler System -- VERDICT: IMPLEMENTED, NOT TESTED
 
 ### What Was Done
 
@@ -153,7 +153,7 @@ P _wing/0/_spoil1_hde 50.000000000
 
 ---
 
-## 5. Cockpit Controls Audit — VERDICT: PARTIAL
+## 5. Cockpit Controls Audit -- VERDICT: PARTIAL
 
 | Control | Visual | Clickspot | Dataref | System | Status | Verified |
 |---------|--------|-----------|---------|--------|--------|----------|
@@ -170,7 +170,7 @@ P _wing/0/_spoil1_hde 50.000000000
 
 ---
 
-## 6. EFB Layout — VERDICT: PASS WITH CAVEATS
+## 6. EFB Layout -- VERDICT: PASS WITH CAVEATS
 
 ### What Was Verified (static code inspection)
 
@@ -180,10 +180,10 @@ P _wing/0/_spoil1_hde 50.000000000
 | Old `fenixProgressBar()` (with aircraft icon) removed | PASS | Zero occurrences |
 | New `drawFplnBar()` text-only | PASS | No aircraft drawing commands |
 | Dock uses text labels | PASS | `textc()` calls only, no `frostedIcon()` |
-| Mock panel overlap fixed (y=120→225) | PASS | `glassCard(30, 225, ...)` |
+| Mock panel overlap fixed (y=120->225) | PASS | `glassCard(30, 225, ...)` |
 | Dock padding 5px | PASS | `roundRect(x + 5, dock_y + 5, cxmin - 10, ...)` |
 | FPLN bar ends y=210, mock panel starts y=225 | PASS | 15px gap between elements |
-| Dock cxmin changed W/6→W/5 | PASS | 5 apps instead of 6 |
+| Dock cxmin changed W/6->W/5 | PASS | 5 apps instead of 6 |
 | TOGA button removed from EFB | PASS | `plasticTogaButton()` function, `TOGA_PRESSED` variable, drawing code, mouse handling all removed |
 | Dock reduced to 3 functional apps | PASS | Clock, Checklist, Debug (was 5 with 3 mockups) |
 | "mock view" text removed | PASS | No mock placeholder text remaining |
@@ -192,13 +192,13 @@ P _wing/0/_spoil1_hde 50.000000000
 | X-Plane commands registered | PASS | `a321neo/efb/page/*` and `a321neo/efb/toggle` commands registered in efb.lua |
 
 ### Unverified Pages
-- Pages 2-9 (MCDU, Performance, Fuel, Systems, Manuals, debug) — NOT audited for spacing
+- Pages 2-9 (MCDU, Performance, Fuel, Systems, Manuals, debug) -- NOT audited for spacing
 - No automated intersection checks implemented
 - No simulator testing of EFB layout
 
 ---
 
-## 6.5. Cockpit Shaders — VERDICT: IMPLEMENTED, NOT TESTED
+## 6.5. Cockpit Shaders -- VERDICT: IMPLEMENTED, NOT TESTED
 
 Added PBR material properties to cockpit objects for proper shader rendering:
 
@@ -213,7 +213,7 @@ Added PBR material properties to cockpit objects for proper shader rendering:
 | `cockpit_interior_obj/cockpit interior.obj` | 0.5 0.05 | 0.04 0.04 0.04 |
 | `cockpit_interior_obj/cockpit seats.obj` | 0.8 0.0 | 0.02 0.02 0.02 |
 
-### Cockpit Wall Textures — A321_Mod Fuselage Applied
+### Cockpit Wall Textures -- A321_Mod Fuselage Applied
 
 Applied A321_Mod's `Fuse-default.png` + `fuselage-default_NRM.png` to cockpit wall objects:
 
@@ -237,7 +237,7 @@ Texture files copied from `/Users/lukas/Desktop/A321_Mod/objects/Fuse-default.pn
 
 ---
 
-## 6.6. X-Plane 12 Ecosystem Integration — VERDICT: IMPLEMENTED, NOT TESTED
+## 6.6. X-Plane 12 Ecosystem Integration -- VERDICT: IMPLEMENTED, NOT TESTED
 
 ### X-Plane Command Registration
 
@@ -272,7 +272,7 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 
 ---
 
-## 7. Engine Fan Animations — VERDICT: PARTIAL
+## 7. Engine Fan Animations -- VERDICT: PARTIAL
 
 | Component | Status | Evidence |
 |-----------|--------|----------|
@@ -282,15 +282,15 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 | External engine fan (right) | **NOT IMPLEMENTED** | 0 `ANIM_rotate_begin` in `right engine external.obj` |
 | Engine config dataref | PASS | `leap1a.lua`: `fan_n1_rpm_max = 3855.0`, `n1_to_nfan()` function |
 
-**External engine fan animations require Blender OBJ editing — not done in this session.**
+**External engine fan animations require Blender OBJ editing -- not done in this session.**
 
 ---
 
-## 8. Documentation — VERDICT: PARTIAL
+## 8. Documentation -- VERDICT: PARTIAL
 
 | File | Exists | Accurate | Notes |
 |------|--------|----------|-------|
-| DEVELOPMENT_STATUS.md | YES | Yes | This document — updated with audit results |
+| DEVELOPMENT_STATUS.md | YES | Yes | This document -- updated with audit results |
 | ASSET_CLEANUP_REPORT.md | **NO** | N/A | Required by Section 3.4, not created |
 | COCKPIT_CONTROLS_AUDIT.md | YES | Yes | Documents spoiler issue and control states |
 | EFB_LAYOUT_AUDIT.md | YES | Yes | Covers page 1 only |
@@ -302,7 +302,7 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 
 ---
 
-## 9. Testing — VERDICT: NOT PERFORMED
+## 9. Testing -- VERDICT: NOT PERFORMED
 
 | Test Type | Performed | Result |
 |-----------|-----------|--------|
@@ -318,10 +318,10 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 | Cockpit shader test | **NO** | |
 
 ### Static Checks Available
-- X-Plane Log.txt shows pre-existing ACF error: `legacy/front gear.obj` not found — this was from a run BEFORE our .acf change. Our change (object 46 → `LandingGears.obj`) should resolve this on next simulator launch.
-- Removed `temp fix.obj` (object 29) and `cup.obj` (object 33) from .acf and deleted files — unused elements trimmed from aircraft
+- X-Plane Log.txt shows pre-existing ACF error: `legacy/front gear.obj` not found -- this was from a run BEFORE our .acf change. Our change (object 46 -> `LandingGears.obj`) should resolve this on next simulator launch.
+- Removed `temp fix.obj` (object 29) and `cup.obj` (object 33) from .acf and deleted files -- unused elements trimmed from aircraft
 - Sound errors in fmod/A321.snd are pre-existing, unrelated to our changes.
-- AT plugin disabled (x86_64 on ARM64) — pre-existing, unrelated to our changes.
+- AT plugin disabled (x86_64 on ARM64) -- pre-existing, unrelated to our changes.
 
 ---
 
@@ -329,21 +329,21 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 
 | ID | Subsystem | Defect | Severity | Status | Repair |
 |----|-----------|--------|----------|--------|--------|
-| D1 | Rudder Pedals | wheel.lua overwrites clickspot datarefs every frame | HIGH | **FIXED** — override mechanism in wheel.lua |
-| D2 | Spoiler | No `_spoil1`/`_spoil2` in .acf wing section | HIGH | **FIXED** — `_spoil1` definitions added |
-| D3 | Documentation | ASSET_CLEANUP_REPORT.md missing | LOW | Open — create per Section 3.4 |
-| D4 | Documentation | ASSET_REUSE_REGISTER.md missing | LOW | Open — create per Section 10 |
-| D5 | Licensing | LandingGears/Fuselage door attribution not in OBJ files | MEDIUM | Open — add copyright notices or documentation |
-| D6 | Engine Fans | External engine fan animations missing | MEDIUM | Open — Blender OBJ edit required |
-| D7 | Landing Gear | Door clipping/pivot unverified | MEDIUM | Open — requires X-Plane testing |
-| D8 | EFB | TOGA button on EFB instead of physical throttle | HIGH | **FIXED** — TOGA removed from EFB |
-| D9 | EFB | Mock dock apps (AviTab, ChartFox, Browser) non-functional | MEDIUM | **FIXED** — replaced with Clock, Checklist, Debug |
-| D10 | EFB | "mock view" placeholder text on dock apps | MEDIUM | **FIXED** — removed |
-| D11 | Aircraft | `temp fix.obj` unused placeholder object | LOW | **FIXED** — removed from .acf and deleted file |
-| D12 | Aircraft | `cup.obj` unused detail object | LOW | **FIXED** — removed from .acf and deleted file |
-| D13 | EFB | Pages 7-8 empty stubs | LOW | **FIXED** — repurposed as Systems Debug and Flight Debug pages |
-| D14 | EFB | Page 9 unused credits placeholder | LOW | **FIXED** — removed from includes and page tables |
-| D15 | Integration | No X-Plane commands for EFB functions | MEDIUM | **FIXED** — 11 commands registered in efb.lua |
+| D1 | Rudder Pedals | wheel.lua overwrites clickspot datarefs every frame | HIGH | **FIXED** -- override mechanism in wheel.lua |
+| D2 | Spoiler | No `_spoil1`/`_spoil2` in .acf wing section | HIGH | **FIXED** -- `_spoil1` definitions added |
+| D3 | Documentation | ASSET_CLEANUP_REPORT.md missing | LOW | Open -- create per Section 3.4 |
+| D4 | Documentation | ASSET_REUSE_REGISTER.md missing | LOW | Open -- create per Section 10 |
+| D5 | Licensing | LandingGears/Fuselage door attribution not in OBJ files | MEDIUM | Open -- add copyright notices or documentation |
+| D6 | Engine Fans | External engine fan animations missing | MEDIUM | Open -- Blender OBJ edit required |
+| D7 | Landing Gear | Door clipping/pivot unverified | MEDIUM | Open -- requires X-Plane testing |
+| D8 | EFB | TOGA button on EFB instead of physical throttle | HIGH | **FIXED** -- TOGA removed from EFB |
+| D9 | EFB | Mock dock apps (AviTab, ChartFox, Browser) non-functional | MEDIUM | **FIXED** -- replaced with Clock, Checklist, Debug |
+| D10 | EFB | "mock view" placeholder text on dock apps | MEDIUM | **FIXED** -- removed |
+| D11 | Aircraft | `temp fix.obj` unused placeholder object | LOW | **FIXED** -- removed from .acf and deleted file |
+| D12 | Aircraft | `cup.obj` unused detail object | LOW | **FIXED** -- removed from .acf and deleted file |
+| D13 | EFB | Pages 7-8 empty stubs | LOW | **FIXED** -- repurposed as Systems Debug and Flight Debug pages |
+| D14 | EFB | Page 9 unused credits placeholder | LOW | **FIXED** -- removed from includes and page tables |
+| D15 | Integration | No X-Plane commands for EFB functions | MEDIUM | **FIXED** -- 11 commands registered in efb.lua |
 
 ---
 
@@ -355,7 +355,7 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 | Spoiler surface definitions | `650b8d1` | `_spoil1/0..9`, `_spoil1_chord`, `_spoil1_hds`, `_spoil1_hde` in .acf |
 | Landing gear doors merged | `d3ecb1b` | 15 door meshes + 9 ANIM blocks in LandingGears.obj |
 | EFB icon removal | `fac05c6` + `d6798cd` | `frostedIcon()` removed, text-only dock, 5px padding |
-| EFB overlap fix | `d6798cd` | Mock panel moved y=120→225 |
+| EFB overlap fix | `d6798cd` | Mock panel moved y=120->225 |
 | TOGA removed from EFB | Working tree (uncommitted) | `plasticTogaButton()`, `TOGA_PRESSED`, drawing code, mouse handling all removed from efb_home_widgets.lua |
 | Dock refined (3 functional apps) | Working tree (uncommitted) | Clock, Checklist, Debug apps; mock apps removed |
 | Mock view text removed | Working tree (uncommitted) | No mock placeholder text in EFB page 1 |
@@ -371,16 +371,16 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 
 ## 12. Remaining Defects and Untested Items
 
-1. **X-Plane 12 not tested** — all code changes unverified at runtime
-2. **External engine fan animations** — NOT implemented (requires Blender)
-3. **ASSET_CLEANUP_REPORT.md** — not created
-4. **ASSET_REUSE_REGISTER.md** — not created
-5. **Landing gear door attribution** — not documented in OBJ files
-6. **Landing gear door clipping/pivots** — unverified in simulator
-7. **Spoiler values** — estimates, need refinement in sim
-8. **Rudder pedal visual feedback** — no clickspot-specific animation
-9. **EFB debug page runtime test** — requires simulator testing
-10. **Cockpit shader render test** — requires simulator testing
+1. **X-Plane 12 not tested** -- all code changes unverified at runtime
+2. **External engine fan animations** -- NOT implemented (requires Blender)
+3. **ASSET_CLEANUP_REPORT.md** -- not created
+4. **ASSET_REUSE_REGISTER.md** -- not created
+5. **Landing gear door attribution** -- not documented in OBJ files
+6. **Landing gear door clipping/pivots** -- unverified in simulator
+7. **Spoiler values** -- estimates, need refinement in sim
+8. **Rudder pedal visual feedback** -- no clickspot-specific animation
+9. **EFB debug page runtime test** -- requires simulator testing
+10. **Cockpit shader render test** -- requires simulator testing
 
 ---
 
@@ -392,7 +392,7 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 | A321_Mod gear/doors GPL v2 | Modifications allowed; redistribution requires GPL v2 compatibility |
 | License incompatibility | GPL v2 and CC BY-NC-ND 4.0 are NOT compatible for combined redistribution |
 | No per-file copyright | OBJ files lack embedded copyright notices; attribution only in README.copyright.md |
-| Cockpit wall textures (A321_Mod) | GPL v2 — fuselage wall textures copied to HMW project |
+| Cockpit wall textures (A321_Mod) | GPL v2 -- fuselage wall textures copied to HMW project |
 | Recommendation | Internal use OK; do not redistribute without legal review |
 
 ---
@@ -411,7 +411,7 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 
 | File | Change Type |
 |------|-------------|
-| `A321.acf` | Removed objects 29 (temp fix.obj) and 33 (cup.obj); updated count 47→45 |
+| `A321.acf` | Removed objects 29 (temp fix.obj) and 33 (cup.obj); updated count 47->45 |
 | `objects/cockpit_interior_obj/temp fix.obj` | Deleted |
 | `objects/cup.obj` | Deleted |
 | `plugins/sasl/data/modules/Custom Module/EFB/efb_home_widgets.lua` | Removed TOGA button, refined dock, removed mock text, added debug panel |
@@ -439,8 +439,8 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 
 | Question | Answer |
 |----------|--------|
-| Ready for private simulator test? | **YES, with caveats** — all code changes are syntactically valid, but runtime behavior unverified |
-| Safe to push to private GitHub? | **YES** — repository is local, clean, no secrets, no accidental deletions |
+| Ready for private simulator test? | **YES, with caveats** -- all code changes are syntactically valid, but runtime behavior unverified |
+| Safe to push to private GitHub? | **YES** -- repository is local, clean, no secrets, no accidental deletions |
 | Conditions before push? | None from code perspective; user must create GitHub repo first and provide URL |
 
 **Aircraft was NOT loaded and tested in X-Plane 12 during this audit session.**

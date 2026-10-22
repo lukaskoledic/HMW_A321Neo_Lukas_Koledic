@@ -1,4 +1,4 @@
-# HMW A321 Neo — Legacy-only Apple Silicon rollback
+# HMW A321 Neo -- Legacy-only Apple Silicon rollback
 
 Last updated: 2026-10-20 (Europe/Vienna)
 
@@ -20,4 +20,3 @@ X-Plane test copy:
 /Users/lukas/X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Test/
 
 The original source tree was not modified. A full interactive flight-stack test was not completed because X-Plane stalled during its own startup/scenery-discovery phase; this rollback is ready for user testing.
-
