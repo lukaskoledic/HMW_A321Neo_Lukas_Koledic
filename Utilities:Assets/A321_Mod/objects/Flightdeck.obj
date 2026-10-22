@@ -1,0 +1,28 @@
+I
+800
+OBJ
+
+GLOBAL_cockpit_lit
+POINT_COUNTS	0	0	0	0
+
+# 0 ROOT
+	# 1 Empty: Main-Panel
+	# EMPTY: Main-Panel	weight: 0
+	# 1 Empty: Pedestal-Low
+	# EMPTY: Pedestal-Low	weight: 0
+	# 1 Empty: Radar
+	# EMPTY: Radar	weight: 0
+	# 1 Empty: Seat
+	# EMPTY: Seat	weight: 0
+	# 1 Empty: VU11x
+	# EMPTY: VU11x	weight: 0
+	# 1 Empty: fcu_screen
+	# EMPTY: fcu_screen	weight: 0
+	# 1 Empty: hud
+	# EMPTY: hud	weight: 0
+	# 1 Empty: thr_r
+	# EMPTY: thr_r	weight: 0
+	# 1 Empty: trim_wheel
+	# EMPTY: trim_wheel	weight: 0
+
+# Build with Blender 4.3.2 (build b'32f5fdce0a0a'). Exported with XPlane2Blender 4.3.3-rc.1+120.20240721221521

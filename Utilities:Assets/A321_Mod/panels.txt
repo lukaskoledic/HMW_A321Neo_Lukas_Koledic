@@ -1,0 +1,11 @@
+positions = {
+["nvu_2D_panel"] = { 50, 0, 636, 786 };
+["payload_panel"] = { 161, 502, 1024, 683 };
+["ovhd_2d_panel"] = { 50, 0, 1458, 1013 };
+["palette"] = { 50, 50, 251, 305 };
+["camera_panel"] = { 50, 50, 512, 512 };
+["checklist_panel_2d"] = { 50, 50, 240, 850 };
+["absu_2d_panel"] = { 50, 50, 917, 597 };
+["ground_srv_panel"] = { 906, 55, 655, 880 };
+["uphone"] = { 40, 20, 241, 446 };
+};
