@@ -388,7 +388,7 @@ Registered X-Plane commands in `efb.lua` for EFB functions, enabling joystick/ke
 
 | Concern | Detail |
 |---------|--------|
-| HMW objects CC BY-NC-ND 4.0 | No modifications allowed; redistribution requires attribution, no commercial use |
+| HMW objects CC BY-NC-SA 4.0 | Modifications allowed with attribution; redistribution allowed under same license; non-commercial use |
 | A321_Mod gear/doors GPL v2 | Modifications allowed; redistribution requires GPL v2 compatibility |
 | License incompatibility | GPL v2 and CC BY-NC-ND 4.0 are NOT compatible for combined redistribution |
 | No per-file copyright | OBJ files lack embedded copyright notices; attribution only in README.copyright.md |
