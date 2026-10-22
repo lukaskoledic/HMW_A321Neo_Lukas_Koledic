@@ -28,3 +28,5 @@ Desktop.ini
 # *.dds
 # *.png
 # *.obj
+# Installer build output
+installer/build/

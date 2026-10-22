@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="1.000000">
+    <title>HMW A321neo Installer</title>
+    <organization>HoldMyWire</organization>
+    <description>Installs the HoldMyWire A321neo aircraft for X-Plane 12. The aircraft is downloaded from GitHub at install time, so this package always delivers the latest release.</description>
+    <options customize="never" require-scripts="false" hostArchitectures="x86_64,arm64"/>
+    <domains enable_anywhere="false" enable_currentUserHome="false" enable_localSystem="true"/>
+    <background file="background.png" alignment="bottomleft" scaling="proportionallydown"/>
+    <welcome file="welcome.html" mime-type="text/html"/>
+    <choices-outline>
+        <line choice="pkg">
+            <line choice="app"/>
+        </line>
+    </choices-outline>
+    <choice id="pkg" visible="false">
+        <pkg-ref id="com.hmwa321neo.installer"/>
+    </choice>
+    <choice id="app" title="HMW A321neo Installer.app" description="Install the HMW A321neo aircraft into X-Plane 12">
+        <pkg-ref id="com.hmwa321neo.installer"/>
+    </choice>
+    <pkg-ref id="com.hmwa321neo.installer" version="1.0.0" on="true">HMW_A321neo_Installer.pkg</pkg-ref>
+</installer-gui-script>

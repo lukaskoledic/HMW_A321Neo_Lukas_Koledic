@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: -apple-system, "Helvetica Neue", Helvetica, sans-serif;
+            color: #1c2333;
+            margin: 0;
+            padding: 22px 30px 10px 30px;
+            line-height: 1.5;
+        }
+        h1 {
+            font-size: 25px;
+            font-weight: 300;
+            letter-spacing: -0.3px;
+            margin: 0 0 4px 0;
+            color: #101828;
+        }
+        h2 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.1px;
+            color: #5a6b8c;
+            margin: 20px 0 7px 0;
+        }
+        p { font-size: 13px; margin: 0 0 10px 0; color: #37425a; }
+        ul { font-size: 13px; margin: 0 0 10px 0; padding-left: 20px; color: #37425a; }
+        li { margin-bottom: 5px; }
+        code {
+            font-family: "SF Mono", Menlo, monospace;
+            font-size: 11.5px;
+            background: #eef1f7;
+            padding: 1px 5px;
+            border-radius: 3px;
+            color: #2c3a55;
+        }
+        .rule { height: 1px; background: #dde3ee; margin: 16px 0; border: 0; }
+        .note {
+            background: #f4f7fc;
+            border-left: 3px solid #4a6fa5;
+            padding: 10px 14px;
+            font-size: 12.5px;
+            color: #33405a;
+            margin: 12px 0 0 0;
+        }
+        .foot { font-size: 11.5px; color: #7b879e; margin-top: 16px; }
+    </style>
+</head>
+<body>
+    <h1>HMW A321neo for X-Plane 12</h1>
+    <p>This package installs the <strong>HMW A321neo Installer</strong> application. The application downloads the aircraft directly from the HoldMyWire GitHub repository, so the installation always reflects the most recent commit on the <code>main</code> branch.</p>
+
+    <h2>What happens next</h2>
+    <ul>
+        <li>The installer app is placed in your <code>/Applications</code> folder.</li>
+        <li>Launch it and confirm the X-Plane 12 location if it is not detected automatically.</li>
+        <li>The aircraft is fetched from GitHub and written to <code>X-Plane 12/Aircraft/HMW_A321Neo_AppleSilicon_Dev</code>.</li>
+        <li>Start X-Plane 12 and select the HMW A321neo from the aircraft list.</li>
+    </ul>
+
+    <h2>Updating</h2>
+    <p>Re-run the installer at any time. It will pull the newest <code>main</code> commit and replace the installed aircraft, while preserving your liveries, display preferences and saved EFB configuration.</p>
+
+    <hr class="rule">
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>X-Plane 12 for macOS</li>
+        <li>Git command line tools (<code>git</code> must be available)</li>
+        <li>An internet connection for the GitHub download</li>
+    </ul>
+
+    <div class="note">
+        <strong>Licensing.</strong> HoldMyWire original assets are released under
+        CC BY-NC-SA 4.0. Landing gear and door geometry originate from the A321_Mod
+        project under GPL v2. Sound banks originate from the A32NX project under
+        CC BY-NC-SA 4.0. Please review the bundled LICENSE and ACKNOWLEDGMENTS
+        files, and refer to the source repositories for full attribution details.
+    </div>
+
+    <p class="foot">HoldMyWire &middot; A321neo Development Project</p>
+</body>
+</html>
